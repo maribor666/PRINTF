@@ -1,0 +1,598 @@
+#include  "ft_printf.h"
+
+void    print_d(t_modes mods, int arg)
+{
+    int i;
+    char *s;
+    int j;
+    i = 0;
+    j = 0;
+    if (ft_strchr(mods.flags, '+') != NULL && ft_strchr(mods.flags, ' ') != NULL)
+    {
+        while (i < 3)
+        {
+            if (mods.flags[i] != ' ')
+            {
+                mods.flags[j] = mods.flags[i];
+                j++;
+            }
+            i++;
+        }
+    }
+    mods.flags[2] = '\0';
+    if (ft_strchr(mods.flags, '#') != NULL)
+        *ft_strchr(mods.flags, '#') = '_';// видаляє #
+    char *prefix;
+    char *value;
+    char *padding;
+    char *res;
+    char *buff;
+
+    prefix = make_prefix(mods, arg);
+    value = make_value(mods, arg);
+    padding = make_padding(mods, arg, prefix, value);
+
+    if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
+    {
+        buff = ft_strjoin(prefix, padding);
+        res = ft_strjoin(buff, value);
+        free(buff);
+    }
+    else {
+        if (ft_strchr(mods.flags, '-') != NULL)
+        {
+            buff = ft_strjoin(prefix, value);
+            res = ft_strjoin(buff, padding);
+            free(buff);
+        }
+        else
+        {
+            buff = ft_strjoin(prefix, value);
+            res = ft_strjoin(padding, buff);
+            free(buff);
+        }
+    }
+    ft_putstr(res);
+    free(prefix);
+    free(padding);
+    free(value);
+    free(res);
+}
+char    *make_value(t_modes mods, int arg)
+{
+    char *value;
+    char *p;
+    char *num;
+
+    p = "";
+    if (arg < 0)
+        arg = -arg;
+    num = ft_itoa(arg);
+    if (mods.precision == -1)
+        value = num;
+    if (mods.precision != -1)
+    {
+        if (mods.precision > ft_count_num(arg))
+        {
+            p = create_and_fill(mods.precision - ft_count_num(arg), '0');
+            value = ft_strjoin(p, num);
+            free(num);
+            free(p);
+        }
+        else
+        {
+            value = ft_strdup(num);
+            free(num);
+        }
+    }
+    return (value);
+}
+
+char    *make_padding(t_modes mods, int arg, char *prefix, char *value)
+{
+    char    *padding;
+    char    filler;
+    int     count_to_fill;
+
+    padding = ft_strdup("");
+    filler = ' ';
+    if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
+        filler = '0';
+    if (mods.precision == -1 && mods.width != -1)
+    {
+        count_to_fill = mods.width - ft_strlen(prefix) - ft_count_num(arg);
+        free(padding);
+        padding = create_and_fill(count_to_fill, filler);
+    }
+    if (mods.precision != -1 && mods.width != -1)
+    {
+        count_to_fill = mods.width - ft_strlen(prefix) - ft_strlen(value);
+        if (count_to_fill >= 0)
+        {
+            free(padding);
+            padding = create_and_fill(count_to_fill, filler);
+        }
+    }
+    return (padding);
+}
+
+char    *make_prefix(t_modes mods, int arg) {
+    char *prefix;
+
+    prefix = (char*)malloc(sizeof(char) + 1);
+    prefix[0] = '\0';
+    if (ft_strchr(mods.flags, '+') != NULL)
+    {
+        if (arg < 0)
+            prefix = append(prefix, "-");
+        else
+            prefix = append(prefix, "+");
+        return (prefix);
+    }
+    if (ft_strchr(mods.flags, ' ') != NULL)
+    {
+        if (arg < 0)
+            prefix = append(prefix, "-");
+        else
+            prefix = append(prefix, " ");
+        return (prefix);
+    }
+    if (arg < 0)
+        prefix = append(prefix, "-");
+    return (prefix);
+}
+
+char    *create_and_fill(int count, char filler)
+{
+    char    *res;
+    int     i;
+
+    i = 0;
+    res = malloc(sizeof(char) * (count + 1));
+    res[count] = '\0';
+    while (i < count)
+    {
+        res[i] = filler;
+        i++;
+    }
+    return (res);
+}
+
+char    *append(char *source, char *to_append)//source allocated with malloc but to_append is stack located
+{
+    char *res;
+
+    res = ft_strjoin(source, to_append);
+    free(source);
+    return (res);
+}
+//void    print_d(t_modes mods, int arg)
+//{
+//    int i;
+//    char *s;
+//    int j;
+//    i = 0;
+//    j = 0;
+//    if (ft_strchr(mods.flags, '+') != NULL && ft_strchr(mods.flags, ' ') != NULL)
+//    {
+//        while (i < 3)
+//        {
+//            if (mods.flags[i] != ' ')
+//            {
+//                mods.flags[j] = mods.flags[i];
+//                j++;
+//            }
+//            i++;
+//        }
+//    }
+//    mods.flags[2] = '\0';
+//    if (ft_strchr(mods.flags, '#') != NULL)
+//        *ft_strchr(mods.flags, '#') = '_';// видаляє #
+//   // printf("flags - |%s\n", mods.flags);
+//   //тут десь перетворити аргумент для hh ll l і тд
+//    if ((mods.flags[0] == '_' && mods.flags[1] == '_') || (mods.flags[0] == '#'))
+//        print_d_simple(mods, arg);//bez flagiv
+//    if (mods.flags[0] == '-' && mods.flags[1] == '_')
+//        print_d_minus(mods, arg);//tilku minus
+//    if (mods.flags[0] == ' ' && mods.flags[1] == '_')//hui yogo  znaye
+//        print_d_space(mods, arg);
+//    if (ft_strchr(mods.flags, '+') != NULL && ft_strchr(mods.flags, '_') != NULL)//hui yogo  znaye
+//        print_d_plus(mods, arg);
+//    if (ft_strchr(mods.flags, '_') != NULL && ft_strchr(mods.flags, '0') != NULL)
+//        print_d_zero(mods, arg);
+//    if (ft_strchr(mods.flags, '-') != NULL && ft_strchr(mods.flags, '+') != NULL)
+//        print_d_plus_minus(mods, arg);
+//    if (ft_strchr(mods.flags, '-') != NULL && ft_strchr(mods.flags, ' ') != NULL)
+//        print_d_minus_space(mods, arg);
+//    if (ft_strchr(mods.flags, '-') != NULL && ft_strchr(mods.flags, '#') != NULL)
+//        print_d_minus(mods, arg);
+//    if (ft_strchr(mods.flags, '-') != NULL && ft_strchr(mods.flags, '0') != NULL)
+//        print_d_minus(mods, arg);
+//    if (ft_strchr(mods.flags, '+') != NULL && ft_strchr(mods.flags, '0') != NULL)
+//        print_d_plus_zero(mods, arg);
+//}
+//
+//void    print_d_plus_zero(t_modes mods, int arg)
+//{
+//    if (mods.width == -1 && mods.precision == -1 && mods.mod[0] == '_')
+//        print_d_plus(mods, arg);//ghjcnj + i 0
+//    if (mods.width != -1 && mods.precision == -1 && mods.mod[0] == '_')
+//    {
+//        if (arg >= 0)
+//            ft_putchar('+');
+//        else
+//        {
+//            ft_putchar('-');
+//            arg = -arg;
+//        }
+//        print_fillers('0', mods.width - ft_count_num(arg) - 1);
+//        ft_putnbr(arg);
+//    }// з шириною
+//    if (mods.width != -1 && mods.precision != -1 && mods.mod[0] == '_')
+//        print_d_plus(mods, arg);
+//    // з шириною і точністю
+//    if (mods.width == -1 && mods.precision != -1 && mods.mod[0] == '_')
+//        print_d_plus(mods, arg);
+//    //тільки з точністю
+//}
+//
+//void    print_d_minus_space(t_modes mods, int arg)
+//{
+//    if (mods.width == -1 && mods.precision == -1 && mods.mod[0] == '_')
+//    {
+//        if (arg >=  0)
+//        {
+//            ft_putchar(' ');
+//            ft_putnbr(arg);
+//        }
+//        else
+//        {
+//            ft_putchar('-');
+//            ft_putnbr(-arg);
+//        }
+//    }// тільки - і ' '
+//    if (mods.width != -1 && mods.precision == -1 && mods.mod[0] == '_')
+//    {
+//        if (arg >=  0)
+//        {
+//            ft_putchar(' ');
+//            ft_putnbr(arg);
+//            print_fillers(' ', mods.width - ft_count_num(arg) - 1);
+//        }
+//        else
+//        {
+//            ft_putchar('-');
+//            ft_putnbr(-arg);
+//            print_fillers(' ', mods.width - ft_count_num(arg) - 1);
+//        }
+//    }// тільки з шириною
+//    if (mods.width != -1 && mods.precision != -1 && mods.mod[0] == '_')
+//    {
+//        if (arg >=  0)
+//            ft_putchar(' ');
+//        else
+//        {
+//            ft_putchar('-');
+//            arg = -arg;
+//        }
+//        if (mods.precision <= ft_count_num(arg))
+//            ft_putnbr(arg);
+//        else
+//        {
+//            print_fillers('0', mods.precision - ft_count_num(arg));
+//            ft_putnbr(arg);
+//        }
+//        print_fillers(' ', mods.width - mods.precision - 2);
+//    }//з шириною і точністю
+//    if (mods.width == -1 && mods.precision != -1 && mods.mod[0] == '_')
+//    {
+//        if (arg >=  0)
+//            ft_putchar(' ');
+//        else
+//        {
+//            ft_putchar('-');
+//            arg = -arg;
+//        }
+//        if (mods.precision <= ft_count_num(arg))
+//            ft_putnbr(arg);
+//        else
+//        {
+//            print_fillers('0', mods.precision - ft_count_num(arg));
+//            ft_putnbr(arg);
+//        }
+//    }//тільки з точністю
+//}
+//
+//void    print_d_plus_minus(t_modes mods, int arg)
+//{
+//    if (mods.width == -1 && mods.precision == -1 && mods.mod[0] == '_')
+//        print_d_plus(mods, arg);
+//    //тільки +- i -+
+//    if (mods.width != -1 && mods.precision == -1 && mods.mod[0] == '_')
+//    {
+//        if (arg >= 0)
+//            ft_putchar('+');
+//        else
+//        {
+//            ft_putchar('-');
+//            arg = -arg;
+//        }
+//            ft_putnbr(arg);
+//            print_fillers(' ', mods.width - ft_count_num(arg) - 1);
+//
+//    }//тільки з шириною
+//    if (mods.width != -1 && mods.precision != -1 && mods.mod[0] == '_')
+//    {
+//        if (arg >= 0)
+//            ft_putchar('+');
+//        else
+//        {
+//            ft_putchar('-');
+//            arg = -arg;
+//        }
+//        if (ft_count_num(arg) >= mods.precision)
+//            ft_putnbr(arg);
+//        else
+//        {
+//            print_fillers('0', mods.precision - ft_count_num(arg));
+//            ft_putnbr(arg);
+//        }
+//        print_fillers(' ', mods.width - mods.precision - 1);
+//    }//з шириною і точністю
+//    if (mods.width == -1 && mods.precision != -1 && mods.mod[0] == '_')
+//        print_d_plus(mods, arg);
+//    //тільки з точністю
+//}
+//
+//void    print_d_zero(t_modes mods, int arg)
+//{
+//    if (mods.width == -1 && mods.precision == -1 && mods.mod[0] == '_')
+//        ft_putnbr(arg);//тільки 0
+//    if (mods.width != -1 && mods.precision == -1 && mods.mod[0] == '_')
+//    {
+//        if (arg >= 0)
+//        {
+//            print_fillers('0', mods.width - ft_count_num(arg));
+//            ft_putnbr(arg);
+//        }
+//        else
+//        {
+//            ft_putchar('-');
+//            print_fillers('0', mods.width - ft_count_num(arg) - 1);
+//            ft_putnbr(-arg);
+//        }
+//    }//тільки з шириною
+//    if (mods.width != -1 && mods.precision != -1 && mods.mod[0] == '_')
+//    {
+//        if (arg >= 0)
+//        {
+//            print_fillers(' ', mods.width - mods.precision);
+//            print_fillers('0', mods.precision - ft_count_num(arg));
+//            ft_putnbr(arg);
+//        }
+//        else
+//        {
+//            print_fillers(' ', mods.width - mods.precision - 1);
+//            ft_putchar('-');
+//            print_fillers('0', mods.precision - ft_count_num(arg));
+//            ft_putnbr(-arg);
+//        }
+//    }//з шириною і точністю
+//    if (mods.width == -1 && mods.precision != -1 && mods.mod[0] == '_')
+//    {
+//        if (arg >= 0)
+//        {
+//            print_fillers('0', mods.precision - ft_count_num(arg));
+//            ft_putnbr(arg);
+//        }
+//        else
+//        {
+//            ft_putchar('-');
+//            print_fillers('0', mods.precision - ft_count_num(arg));
+//            ft_putnbr(-arg);
+//        }
+//    }//тільки з точністю
+//}
+//void    print_d_plus(t_modes mods, int arg)
+//{
+//    if (mods.width == -1 && mods.precision == -1 && mods.mod[0] == '_')
+//    {
+//        if (arg >= 0)
+//        {
+//            ft_putchar('+');
+//            ft_putnbr(arg);
+//        }
+//        else
+//            ft_putnbr(arg);
+//    }// prost plus
+//    if (mods.width != -1 && mods.precision == -1 && mods.mod[0] == '_')
+//    {
+//        print_fillers(' ', mods.width - ft_count_num(arg) - 1);
+//        if (arg >= 0)
+//        {
+//
+//            ft_putchar('+');
+//            ft_putnbr(arg);
+//        }
+//        else
+//            ft_putnbr(arg);
+//    }// тільки з шириною
+//    if (mods.width != -1 && mods.precision != -1 && mods.mod[0] == '_')
+//    {
+//        if (mods.precision <= ft_count_num(arg))
+//        {
+//            if (arg >= 0)
+//            {
+//                print_fillers(' ', mods.width - ft_count_num(arg) - 1);
+//                ft_putchar('+');
+//                ft_putnbr(arg);
+//            }
+//            else
+//                ft_putnbr(arg);
+//        }
+//        else
+//        {
+//                print_fillers(' ', mods.width - mods.precision - 1);
+//                if (arg >= 0)
+//                    ft_putchar('+');
+//                else
+//                {
+//                    ft_putchar('-');
+//                    arg = -arg;
+//                }
+//                print_fillers('0', mods.precision - ft_count_num(arg));
+//                ft_putnbr(arg);
+//            }
+//    }//з шириною і точністю
+//    if (mods.width == -1 && mods.precision != -1 && mods.mod[0] == '_')
+//    {
+//        if (arg >= 0)
+//            ft_putchar('+');
+//        else
+//        {
+//            ft_putchar('-');
+//            arg = -arg;
+//        }
+//        print_fillers('0', mods.precision - ft_count_num(arg));
+//        ft_putnbr(arg);
+//    }//тiльки з точністю
+//}
+//
+//void    print_d_space(t_modes mods, int arg)
+//{
+//    if (mods.width == -1 && mods.precision == -1 && mods.mod[0] == '_')
+//    {
+//        ft_putchar(' ');
+//        ft_putnbr(arg);
+//    }// prost probil
+//    if (mods.width != -1 && mods.precision == -1 && mods.mod[0] == '_')
+//    {
+//        ft_putchar(' ');
+//        print_fillers(' ', mods.width - ft_count_num(arg) - 1);
+//        ft_putnbr(arg);
+//    }// тільки з шириною
+//    if (mods.width != -1 && mods.precision != -1 && mods.mod[0] == '_')
+//    {
+//        if (mods.precision <= ft_count_num(arg))
+//        {
+//            print_fillers(' ', mods.width - ft_count_num(arg));
+//            ft_putnbr(arg);
+//        }
+//        else
+//        {
+//            print_fillers(' ', mods.width - mods.precision);
+//            print_fillers('0', mods.precision - ft_count_num(arg));
+//            ft_putnbr(arg);
+//        }
+//    }//з шириною і точністю
+//    if (mods.width == -1 && mods.precision != -1 && mods.mod[0] == '_')
+//    {
+//        if (mods.precision <= ft_count_num(arg))
+//        {
+//            ft_putchar(' ');
+//            ft_putnbr(arg);
+//        }
+//        else
+//        {
+//            ft_putchar(' ');
+//            print_fillers('0', mods.precision - ft_count_num(arg));
+//            ft_putnbr(arg);
+//        }
+//    }// тільки з точністю
+//}
+//
+//void    print_d_simple(t_modes mods, int arg)
+//{//десь тут перетворення для hh ll і тд
+//    if (mods.width == -1 && mods.precision == -1 && mods.mod[0] == '_')
+//        ft_putnbr(arg);//prost %d
+//    if (mods.width != -1 && mods.precision == -1 && mods.mod[0] == '_')
+//    {
+//        print_fillers(' ', mods.width - ft_count_num(arg));
+//        ft_putnbr(arg);
+//    }// тільки з шириною
+//    if (mods.width != -1 && mods.precision != -1 && mods.mod[0] == '_')
+//    {
+//        if (mods.precision <= ft_count_num(arg))
+//        {
+//            print_fillers(' ', mods.width - ft_count_num(arg));
+//            ft_putnbr(arg);
+//        }
+//        else
+//        {
+//            print_fillers(' ', mods.width - mods.precision);
+//            print_fillers('0', mods.precision - ft_count_num(arg));
+//            ft_putnbr(arg);
+//        }
+//    }//з шириною і точністю
+//    if (mods.width == -1 && mods.precision != -1 && mods.mod[0] == '_')
+//    {
+//        if (mods.precision <= ft_count_num(arg))
+//            ft_putnbr(arg);
+//        else
+//        {
+//            print_fillers('0', mods.precision - ft_count_num(arg));
+//            ft_putnbr(arg);
+//        }
+//    }// тільки з точністю
+//}
+//
+//void    print_d_minus(t_modes mods, int arg)
+//{
+//    int i;
+//
+//    i = 0;
+//    if (mods.width == -1 && mods.precision == -1 && mods.mod[0] == '_')
+//        ft_putnbr(arg);//prost d
+//    if (mods.width != -1 && mods.precision == -1 && mods.mod[0] == '_')
+//    {
+//        if (arg >= 0)
+//        {
+//            ft_putnbr(arg);
+//            print_fillers(' ', mods.width - ft_count_num(arg));
+//        }
+//        else
+//        {
+//            ft_putnbr(arg);
+//            print_fillers(' ', mods.width - ft_count_num(arg) - 1);
+//        }
+//    }//з шириною тільки
+//    if (mods.width != -1 && mods.precision != -1 && mods.mod[0] == '_')
+//    {
+//        if (arg < 0)
+//        {
+//            i = 1;
+//            arg = -arg;
+//            ft_putchar('-');
+//        }
+//            if (mods.precision <= ft_count_num(arg))
+//            ft_putnbr(arg);
+//        else
+//        {
+//            print_fillers('0', mods.precision - ft_count_num(arg));
+//            ft_putnbr(arg);
+//        }
+//        print_fillers(' ', mods.width - mods.precision - i);
+//    }// з шириною і точністю
+//    if (mods.width == -1 && mods.precision != -1 && mods.mod[0] == '_')
+//    {
+//        if (mods.precision <= ft_count_num(arg))
+//            ft_putnbr(arg);
+//        else
+//        {
+//            print_fillers('0', mods.precision - ft_count_num(arg));
+//            ft_putnbr(arg);
+//        }
+//    }//тільки з точністю
+//}
+//
+//void    print_fillers(char filler, int count)//povunna povertatu kilkist vuvedenuh zapovnuvachiv
+//{
+//    int i;
+//
+//    i = 0;
+//    while (i < count)
+//    {
+//        ft_putchar(filler);
+//        i++;
+//    }
+//}
