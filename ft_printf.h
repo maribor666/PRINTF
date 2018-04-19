@@ -26,6 +26,8 @@ char    *make_padding(t_modes mods, int arg, char *prefix, char *value);
 char    *make_prefix(t_modes mods, int arg);
 char    *create_and_fill(int count, char filler);
 char    *append(char *source, char *to_append);
+int     print_d(t_modes mods, int arg);
+int     print_mod(t_modes mods, va_list ap);
 //void    print_fillers(char filler, int count);
 //void    print_d(t_modes mods, int arg);
 //void    print_d_simple(t_modes mods, int arg);

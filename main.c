@@ -59,10 +59,10 @@ t_modes write_mods(const char *s, t_modes mods)
     return (mods);
 }
 
-void    print_mod(t_modes mods, va_list ap)
+int    print_mod(t_modes mods, va_list ap)
 {
     if (mods.id == 'd')
-        print_d(mods, va_arg(ap, int));
+        return (print_d(mods, va_arg(ap, int)));
 //    if (mods.id == 'с')
 //        print_с(mods, va_arg(ap, char));
 //    if (mods.id == 's')
@@ -89,7 +89,9 @@ int     ft_printf(const char *str, ...)
     va_list ap;
     int i;
     t_modes mods;
+    int     res;
 
+    res = 0;
     i = 0;
     va_start(ap, str);
     mods = set_modes(mods);
@@ -98,7 +100,7 @@ int     ft_printf(const char *str, ...)
         if (str[i] == '%')
         {
             mods = write_mods((&str[i] + 1), mods);
-            print_mod(mods, ap); //  smt like write end return numbers of chars printed
+            res += print_mod(mods, ap); //  smt like write end return numbers of chars printed
             str += (mods.s - str);
             mods = set_modes(mods);
             continue ;
@@ -107,16 +109,19 @@ int     ft_printf(const char *str, ...)
         }
         write(1, &(*str), 1);
         str++;
+        res++;
     }
     va_end(ap);
-    return (1);
+    return (res);
 }
 
 //int main()
 //{
-//
-//    ft_printf("|%011.111d|rest\n", -42);
-//       printf("|%011.111d|rest\n", -42);
+//    int r1;
+//    int r2;
+//    r1 = ft_printf("|%d|rest\n", -42);
+//       r2 = printf("|%d|rest\n", -42);
+//    printf("r1 = %d; r2 = %d\n", r1, r2);
 //    system("leaks PRINTF | grep Process | tail -n 1");
 ////    ft_printf("|%- 12.4s|rest\n", "42");
 ////    printf("|%- 12.4s| rest\n", "42");

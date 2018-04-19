@@ -1,6 +1,6 @@
 #include  "ft_printf.h"
 
-void    print_d(t_modes mods, int arg)
+int    print_d(t_modes mods, int arg)
 {
     int i;
     char *s;
@@ -27,6 +27,7 @@ void    print_d(t_modes mods, int arg)
     char *padding;
     char *res;
     char *buff;
+    int len;
 
     prefix = make_prefix(mods, arg);
     value = make_value(mods, arg);
@@ -56,7 +57,9 @@ void    print_d(t_modes mods, int arg)
     free(prefix);
     free(padding);
     free(value);
+    len = ft_strlen(res);
     free(res);
+    return (len);
 }
 char    *make_value(t_modes mods, int arg)
 {
