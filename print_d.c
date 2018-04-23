@@ -1,9 +1,8 @@
 #include  "ft_printf.h"
 
-int    print_d(t_modes mods, int arg)
+int    print_d(t_modes mods, ssize_t arg)
 {
     int i;
-    char *s;
     int j;
     i = 0;
     j = 0;
@@ -29,6 +28,7 @@ int    print_d(t_modes mods, int arg)
     char *buff;
     int len;
 
+    arg = caster(mods, arg);
     prefix = make_prefix(mods, arg);
     value = make_value(mods, arg);
     padding = make_padding(mods, arg, prefix, value);
@@ -57,25 +57,42 @@ int    print_d(t_modes mods, int arg)
     free(prefix);
     free(padding);
     free(value);
-    len = ft_strlen(res);
+    len = (int)ft_strlen(res);
     free(res);
     return (len);
 }
-char    *make_value(t_modes mods, int arg)
+
+ssize_t caster(t_modes mods, ssize_t arg)
+{
+    if (ft_strncmp(mods.mod, "h_", 2) == 0)
+        return ((short)arg);
+    if (ft_strncmp(mods.mod, "hh", 2) == 0)
+        return ((signed char)arg);
+    if (ft_strncmp(mods.mod, "l_", 2) == 0)
+        return ((long)arg);
+    if (ft_strncmp(mods.mod, "ll", 2) == 0)
+        return ((long long) arg);
+    if (ft_strncmp(mods.mod, "j_", 2) == 0)
+        return ((intmax_t)arg);
+    if (ft_strncmp(mods.mod, "z_", 2) == 0)
+        return ((size_t)arg);
+    return ((int)arg);
+}
+
+char    *make_value(t_modes mods, ssize_t arg)
 {
     char *value;
     char *p;
     char *num;
 
-    p = "";
     if (arg < 0)
-        arg = -arg;
+        arg *= -1;
     num = ft_itoa(arg);
-    if (mods.precision == -1)
-        value = num;
+    if (arg == 0 && mods.precision == 0)
+        return (ft_strdup(""));
     if (mods.precision != -1)
     {
-        if (mods.precision > ft_count_num(arg))
+        if (mods.precision >= ft_count_num(arg))
         {
             p = create_and_fill(mods.precision - ft_count_num(arg), '0');
             value = ft_strjoin(p, num);
@@ -87,11 +104,12 @@ char    *make_value(t_modes mods, int arg)
             value = ft_strdup(num);
             free(num);
         }
+        return (value);
     }
-    return (value);
+    return (num);
 }
 
-char    *make_padding(t_modes mods, int arg, char *prefix, char *value)
+char    *make_padding(t_modes mods, ssize_t arg, char *prefix, char *value)
 {
     char    *padding;
     char    filler;
@@ -99,7 +117,7 @@ char    *make_padding(t_modes mods, int arg, char *prefix, char *value)
 
     padding = ft_strdup("");
     filler = ' ';
-    if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
+    if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL && mods.precision == -1)
         filler = '0';
     if (mods.precision == -1 && mods.width != -1)
     {
@@ -119,11 +137,11 @@ char    *make_padding(t_modes mods, int arg, char *prefix, char *value)
     return (padding);
 }
 
-char    *make_prefix(t_modes mods, int arg) {
+char    *make_prefix(t_modes mods, ssize_t arg)
+{
     char *prefix;
 
-    prefix = (char*)malloc(sizeof(char) + 1);
-    prefix[0] = '\0';
+    prefix = ft_strdup("");
     if (ft_strchr(mods.flags, '+') != NULL)
     {
         if (arg < 0)

@@ -1,18 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ospeka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/20 12:50:09 by ospeka            #+#    #+#             */
-/*   Updated: 2017/11/20 12:50:11 by ospeka           ###   ########.fr       */
+/*   Created: 2017/11/06 16:35:57 by ospeka            #+#    #+#             */
+/*   Updated: 2017/11/06 16:35:59 by ospeka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-void	ft_putstr(char const *s)
+char	*ft_strchr(const char *s, int c)
 {
-	write(1, s, ft_strlen(s));
+	size_t i;
+
+	i = 0;
+	if (s == NULL)
+		return (NULL);
+	while (s[i])
+	{
+		if ((char)c == '\0')
+		{
+			return ((char*)(s + ft_strlen(s)));
+		}
+		if ((unsigned char)s[i] == (char)c)
+		{
+			return ((char*)(s + i));
+		}
+		i++;
+	}
+	return (NULL);
 }

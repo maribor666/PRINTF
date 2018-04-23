@@ -1,0 +1,5 @@
+
+ 170. FAIL ft_printf("%03.2d", 0);                       -> " 00"
+ 171. FAIL ft_printf("%03.2d", 1);                       -> " 01"
+ 175. FAIL ft_printf("@moulitest: %.d %.0d", 0, 0);      -> "@moulitest:  "
+ 176. FAIL ft_printf("@moulitest: %5.d %5.0d", 0, 0);    -> "@moulitest:            "

@@ -43,9 +43,9 @@ t_modes write_mods(const char *s, t_modes mods)
         mods.mod[1] = 'h';
         s++;
     }
-    if (*s == 'l' && mods.mod[1] == 'l')
+    if (*s == 'l' && mods.mod[0] == 'l')
     {
-        mods.mod[1] = 'h';
+        mods.mod[1] = 'l';
         s++;
     }
     id_s = "sSpdDioOuUxXcC";
@@ -62,17 +62,20 @@ t_modes write_mods(const char *s, t_modes mods)
 int    print_mod(t_modes mods, va_list ap)
 {
     if (mods.id == 'd')
-        return (print_d(mods, va_arg(ap, int)));
+        return (print_d(mods, va_arg(ap, ssize_t)));
 //    if (mods.id == 'с')
 //        print_с(mods, va_arg(ap, char));
 //    if (mods.id == 's')
 //        print_s(mods, va_arg(ap, char*));
 //    if (mods.id == 'p')
 //        print_p(mods, va_arg(ap, int));
+    return (0);
 }
 
-t_modes set_modes(t_modes mods)
+t_modes set_modes(void)
 {
+    t_modes mods;
+
     mods.flags[0] = '_';
     mods.flags[1] = '_';
     mods.flags[2] = '_';
@@ -87,25 +90,23 @@ t_modes set_modes(t_modes mods)
 int     ft_printf(const char *str, ...)
 {
     va_list ap;
-    int i;
+    int     i;
     t_modes mods;
     int     res;
 
     res = 0;
     i = 0;
     va_start(ap, str);
-    mods = set_modes(mods);
+    mods = set_modes();
     while (*str != '\0')
     {
         if (str[i] == '%')
         {
             mods = write_mods((&str[i] + 1), mods);
-            res += print_mod(mods, ap); //  smt like write end return numbers of chars printed
+            res += print_mod(mods, ap);
             str += (mods.s - str);
-            mods = set_modes(mods);
+            mods = set_modes();
             continue ;
-            //inc str(or i) to the next non mod char
-            //clear modes -> continue
         }
         write(1, &(*str), 1);
         str++;
@@ -115,17 +116,19 @@ int     ft_printf(const char *str, ...)
     return (res);
 }
 
-//int main()
+
+//int main(void)
 //{
 //    int r1;
 //    int r2;
-//    r1 = ft_printf("|%d|rest\n", -42);
-//       r2 = printf("|%d|rest\n", -42);
+//    size_t n;
+//
+//    r1 = ft_printf("|%lld|\n", 9223372036854775807);
+//       r2 = printf("|%lld|\n", 9223372036854775807 );
 //    printf("r1 = %d; r2 = %d\n", r1, r2);
+//
 //    system("leaks PRINTF | grep Process | tail -n 1");
-////    ft_printf("|%- 12.4s|rest\n", "42");
-////    printf("|%- 12.4s| rest\n", "42");
-//    //printf("%u", 42);
+//    printf("|%s|\n", ft_ltoa(-9223372036854775808));
 ////    printf("|%010+hhllh.42l0d|rest\n", 42);
 ////     printf("'%25hhhllljzi' '%-i'\n", -9223372036854775808, -42);
 //

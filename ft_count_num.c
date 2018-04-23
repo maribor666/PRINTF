@@ -1,18 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ospeka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/20 12:50:09 by ospeka            #+#    #+#             */
-/*   Updated: 2017/11/20 12:50:11 by ospeka           ###   ########.fr       */
+/*   Created: 2017/11/10 20:53:28 by ospeka            #+#    #+#             */
+/*   Updated: 2017/11/10 20:53:30 by ospeka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-void	ft_putstr(char const *s)
+int     ft_count_num(int num)
 {
-	write(1, s, ft_strlen(s));
+    int res;
+
+    res = 0;
+    if (num == 0)
+        return (1);
+//    if (num < 0)
+//        res++;
+    while (num != 0)
+    {
+        num = num / 10;
+        res++;
+    }
+    return (res);
 }

@@ -89,7 +89,7 @@ $(NAME): $(OBJECTS)
 	ar rc $(NAME) $(OBJECTS)
 
 %.o: %.c
-	gcc $(CFLAGS) -o $@ -c $< $(HEADER)
+	gcc $(FLAGS) -o $@ -c $< $(HEADER)
 clean:
 	rm -f $(OBJECTS)
 fclean: clean

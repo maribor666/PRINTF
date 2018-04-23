@@ -10,14 +10,41 @@
 #                                                                              #
 # **************************************************************************** #
 
+SRCS =	ft_atoi.c \
+		ft_count_num.c \
+		ft_itoa.c \
+		ft_putstr.c \
+		ft_strchr.c \
+		ft_strdup.c \
+		ft_strjoin.c \
+		ft_strlen.c \
+		ft_strncmp.c \
+		main.c \
+		print_d.c \
 
-all:
-	gcc -c *.c libft/*.c -I libft/includes/
-	ar rc libftprintf.a *.o
+
+
+OBJECTS = $(SRCS:.c=.o)
+
+
+FLAGS = -Wall -Werror -Wextra
+
+NAME = libftprintf.a
+
+all: $(NAME)
+
+$(NAME): $(OBJECTS)
+	
+	ar rc $(NAME) $(OBJECTS) 
+
+%.o: %.c
+	gcc $(FLAGS) -c $<
+
 clean:
-	rm *.o
+	rm -f $(OBJECTS)
 
 fclean: clean
-	rm libftprintf.a
+	rm  -f $(NAME)
+	
 
 re: fclean all

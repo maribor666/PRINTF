@@ -8,8 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "libft.h"
-
+#include "libft/libft.h"
+#include <string.h>
 
 typedef struct s_mods{
     char    flags[3];
@@ -20,14 +20,24 @@ typedef struct s_mods{
     char    *s;
 }               t_modes;
 
-
-char    *make_value(t_modes mods, int arg);
-char    *make_padding(t_modes mods, int arg, char *prefix, char *value);
-char    *make_prefix(t_modes mods, int arg);
+int     ft_printf(const char *str, ...);
+char    *make_value(t_modes mods, ssize_t arg);
+char    *make_padding(t_modes mods, ssize_t arg, char *prefix, char *value);
+char    *make_prefix(t_modes mods, ssize_t arg);
 char    *create_and_fill(int count, char filler);
 char    *append(char *source, char *to_append);
-int     print_d(t_modes mods, int arg);
+int     print_d(t_modes mods, ssize_t arg);
 int     print_mod(t_modes mods, va_list ap);
+ssize_t caster(t_modes mods, ssize_t arg);
+int		ft_atoi(const char *str);
+int     ft_count_num(int num);
+char	*ft_itoa(ssize_t n);
+void	ft_putstr(char const *s);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strdup(const char *s1);
+char	*ft_strjoin(char const *s1, char const *s2);
+size_t	ft_strlen(const char *s);
+int     ft_strncmp(const char *s1, const char *s2, size_t n);
 //void    print_fillers(char filler, int count);
 //void    print_d(t_modes mods, int arg);
 //void    print_d_simple(t_modes mods, int arg);

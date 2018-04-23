@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ospeka <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/20 12:50:09 by ospeka            #+#    #+#             */
-/*   Updated: 2017/11/20 12:50:11 by ospeka           ###   ########.fr       */
+/*   Created: 2017/11/06 16:11:07 by ospeka            #+#    #+#             */
+/*   Updated: 2017/11/06 16:13:18 by ospeka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-void	ft_putstr(char const *s)
+size_t	ft_strlen(const char *s)
 {
-	write(1, s, ft_strlen(s));
+	unsigned int i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
 }
