@@ -22,7 +22,7 @@ typedef struct s_mods{
 
 int     ft_printf(const char *str, ...);
 char    *make_value(t_modes mods, ssize_t arg);
-char    *make_padding(t_modes mods, ssize_t arg, char *prefix, char *value);
+char    *make_padding(t_modes mods, char *prefix, char *value);
 char    *make_prefix(t_modes mods, ssize_t arg);
 char    *create_and_fill(int count, char filler);
 char    *append(char *source, char *to_append);
@@ -38,6 +38,12 @@ char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *s);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
+int     print_o(t_modes mods, size_t arg);
+size_t  caster_o(t_modes mods, size_t arg);
+char    *make_prefix_o(t_modes mods, size_t arg);
+char    *make_value_o(t_modes mods, size_t arg);
+char    *append(char *source, char *to_append);
+char    *create_and_fill(int count, char filler);
 //void    print_fillers(char filler, int count);
 //void    print_d(t_modes mods, int arg);
 //void    print_d_simple(t_modes mods, int arg);

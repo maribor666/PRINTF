@@ -19,8 +19,10 @@ SRCS =	ft_atoi.c \
 		ft_strjoin.c \
 		ft_strlen.c \
 		ft_strncmp.c \
+		ft_itoabase.c \
 		main.c \
 		print_d.c \
+		print_o.c \
 
 
 

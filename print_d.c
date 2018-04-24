@@ -31,7 +31,7 @@ int    print_d(t_modes mods, ssize_t arg)
     arg = caster(mods, arg);
     prefix = make_prefix(mods, arg);
     value = make_value(mods, arg);
-    padding = make_padding(mods, arg, prefix, value);
+    padding = make_padding(mods, prefix, value);
 
     if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
     {
@@ -109,7 +109,7 @@ char    *make_value(t_modes mods, ssize_t arg)
     return (num);
 }
 
-char    *make_padding(t_modes mods, ssize_t arg, char *prefix, char *value)
+char    *make_padding(t_modes mods, char *prefix, char *value)
 {
     char    *padding;
     char    filler;
@@ -121,7 +121,7 @@ char    *make_padding(t_modes mods, ssize_t arg, char *prefix, char *value)
         filler = '0';
     if (mods.precision == -1 && mods.width != -1)
     {
-        count_to_fill = mods.width - ft_strlen(prefix) - ft_count_num(arg);
+        count_to_fill = mods.width - ft_strlen(prefix) - ft_strlen(value);
         free(padding);
         padding = create_and_fill(count_to_fill, filler);
     }

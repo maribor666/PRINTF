@@ -1,5 +1,5 @@
 
- 170. FAIL ft_printf("%03.2d", 0);                       -> " 00"
- 171. FAIL ft_printf("%03.2d", 1);                       -> " 01"
- 175. FAIL ft_printf("@moulitest: %.d %.0d", 0, 0);      -> "@moulitest:  "
- 176. FAIL ft_printf("@moulitest: %5.d %5.0d", 0, 0);    -> "@moulitest:            "
+
+>>>> 92_incomptbl_values_oOxX.spec [FAIL] ..F..FF [FAIL] test_octal_up_long_min -> printf("%O", LONG_MIN)
+
+  95. FAIL ft_printf("@moulitest: %#.o %#.0o", 0, 0);    -> "@moulitest: 0 0"

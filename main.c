@@ -61,8 +61,10 @@ t_modes write_mods(const char *s, t_modes mods)
 
 int    print_mod(t_modes mods, va_list ap)
 {
-    if (mods.id == 'd')
+    if (mods.id == 'd' || mods.id == 'i' || mods.id == 'D')
         return (print_d(mods, va_arg(ap, ssize_t)));
+    if (mods.id == 'o' || mods.id == 'O')
+        return (print_o(mods, va_arg(ap, size_t)));
 //    if (mods.id == 'с')
 //        print_с(mods, va_arg(ap, char));
 //    if (mods.id == 's')
@@ -117,23 +119,25 @@ int     ft_printf(const char *str, ...)
 }
 
 
-//int main(void)
-//{
-//    int r1;
-//    int r2;
-//    size_t n;
-//
-//    r1 = ft_printf("|%lld|\n", 9223372036854775807);
-//       r2 = printf("|%lld|\n", 9223372036854775807 );
-//    printf("r1 = %d; r2 = %d\n", r1, r2);
-//
-//    system("leaks PRINTF | grep Process | tail -n 1");
-//    printf("|%s|\n", ft_ltoa(-9223372036854775808));
-////    printf("|%010+hhllh.42l0d|rest\n", 42);
-////     printf("'%25hhhllljzi' '%-i'\n", -9223372036854775808, -42);
-//
-//    return 0;
-//}
+#include <limits.h>
+
+int main(void)
+{
+    int r1;
+    int r2;
+    //size_t n;
+
+    r1 = ft_printf("|%#o|\n", LONG_MIN);
+       r2 = printf("|%#o|\n", LONG_MIN);
+
+    printf("r1 = %d; r2 = %d\n", r1, r2);
+
+    system("leaks PRINTF | grep Process | tail -n 1");
+//    printf("|%010+hhllh.42l0d|rest\n", 42);
+//     printf("'%25hhhllljzi' '%-i'\n", -9223372036854775808, -42);
+
+    return 0;
+}
 
 
 

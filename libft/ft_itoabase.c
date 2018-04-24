@@ -12,15 +12,15 @@
 
 #include "libft.h"
 
-static	int	count_size(int n, int base)
+static	int	count_size(size_t n, size_t base)
 {
-	long long int	buff;
+	size_t	buff;
 	int				size;
 
 	size = 0;
-	buff = (long long int)n;
-	if (buff < 0)
-		size++;
+	buff = (size_t)n;
+//	if (buff < 0)
+//		size++;
 	if (n == 0)
 		return (2);
 	while (buff != 0)
@@ -31,7 +31,7 @@ static	int	count_size(int n, int base)
 	return (size + 1);
 }
 
-static char	*write_str(char *res, int i, long long int buff, int base)
+static char	*write_str(char *res, int i, size_t buff, size_t base)
 {
 	char letter;
 
@@ -51,24 +51,27 @@ static char	*write_str(char *res, int i, long long int buff, int base)
 	return (res);
 }
 
-char		*ft_itoabase(int n, int base)
+char		*ft_itoabase(size_t n, int base)
 {
-	long long int	buff;
+	size_t          buff;
 	char			*res;
 	int				i;
 
 	i = count_size(n, base) - 2;
-	buff = (long long int)n;
+	buff = (size_t)n;
 	res = (char*)malloc(sizeof(char) * count_size(n, base));
 	if (res == NULL)
 		return (NULL);
 	if (n == 0)
-		return (ft_strdup("0"));
-	if (n < 0)
-	{
-		res[0] = '-';
-		buff = -buff;
-	}
+    {
+        free(res);
+        return (ft_strdup("0"));
+    }
+// if (n < 0)
+//	{
+//		res[0] = '-';
+//		buff = -buff;
+//	}
 	res[count_size(n, base) - 1] = '\0';
 	res = write_str(res, i, buff, base);
 	return (res);
