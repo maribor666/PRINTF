@@ -23,6 +23,9 @@ SRCS =	ft_atoi.c \
 		main.c \
 		print_d.c \
 		print_o.c \
+		print_x.c \
+		print_u.c \
+		print_p.c
 
 
 

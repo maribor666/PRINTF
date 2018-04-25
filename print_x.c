@@ -1,13 +1,8 @@
-//
-// Created by Oleh SPEKA on 4/23/18.
-//
 
 #include "ft_printf.h"
 
-int     print_o(t_modes mods, size_t arg)
+int     print_x(t_modes mods, size_t arg)
 {
-   // printf("arg in10 - |%d|\n", arg);
-
     char *prefix;
     char *padding;
     char *value;
@@ -16,9 +11,11 @@ int     print_o(t_modes mods, size_t arg)
     int  len;
 
     arg = caster_o(mods, arg);
-    prefix = make_prefix_o(mods, arg);
-    value = make_value_o(mods, arg);
+    prefix = make_prefix_x(mods, arg);
+    value = make_value_x(mods, arg);
     padding = make_padding(mods,  prefix, value);
+    if (mods.id == 'x')
+        value = to_lower_str(value);
     if (mods.precision != -1 && ft_strchr(mods.flags, '0') != NULL)
         *ft_strchr(mods.flags, '0') = '_';
     if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
@@ -51,35 +48,19 @@ int     print_o(t_modes mods, size_t arg)
     return (len);
 }
 
-size_t  caster_o(t_modes mods, size_t arg)
+char *make_prefix_x(t_modes mods, size_t arg)
 {
-    if (ft_strncmp(mods.mod, "hh", 2) == 0 && mods.id == 'O')
-        return ((unsigned short)arg);
-    if (ft_strncmp(mods.mod, "h_", 2) == 0)
-        return ((unsigned short)arg);
-    if (ft_strncmp(mods.mod, "hh", 2) == 0)
-        return ((unsigned char)arg);
-    if (ft_strncmp(mods.mod, "l_", 2) == 0 || mods.id == 'O')
-        return ((unsigned long)arg);
-    if (ft_strncmp(mods.mod, "ll", 2) == 0)
-        return ((unsigned long long) arg);
-    if (ft_strncmp(mods.mod, "j_", 2) == 0)
-        return ((uintmax_t)arg);
-    if (ft_strncmp(mods.mod, "z_", 2) == 0)
-        return ((size_t)arg);
-    return ((unsigned int)arg);
-}
 
-char *make_prefix_o(t_modes mods, size_t arg)
-{
-    if (mods.precision == -1 && arg == 0)
+    if (ft_strchr(mods.flags, '#') != NULL && arg == 0)
         return (ft_strdup(""));
-    if (ft_strchr(mods.flags, '#') != NULL)
-        return (ft_strdup("0"));
+    if (ft_strchr(mods.flags, '#') != NULL && mods.id == 'x')
+        return (ft_strdup("0x"));
+    if (ft_strchr(mods.flags, '#') != NULL && mods.id == 'X')
+        return (ft_strdup("0X"));
     return (ft_strdup(""));
 }
 
-char *make_value_o(t_modes mods, size_t arg)
+char *make_value_x(t_modes mods, size_t arg)
 {
     char *value;
     char *p;
@@ -87,13 +68,14 @@ char *make_value_o(t_modes mods, size_t arg)
 
     if (arg == 0 && mods.precision == 0)
         return (ft_strdup(""));
-    num = ft_itoabase(arg, 8);
+    num = ft_itoabase(arg, 16);
     if (mods.precision != -1)
     {
         if (mods.precision >= (int)ft_strlen(num))
         {
             p = create_and_fill(mods.precision - ft_strlen(num), '0');
             value = ft_strjoin(p, num);
+            free(num);
             free(p);
         }
         else
@@ -102,6 +84,27 @@ char *make_value_o(t_modes mods, size_t arg)
     }
     return (num);
 }
+
+char *to_lower_str(char *value)
+{
+    int i;
+
+    i = 0;
+    while (value[i] != '\0')
+    {
+        if (value[i] >= 'A' && value[i] <= 'F')
+            value[i] += 32;
+        i++;
+    }
+    return (value);
+}
+
+
+
+
+
+
+
 
 
 

@@ -1,13 +1,9 @@
-//
-// Created by Oleh SPEKA on 4/23/18.
-//
 
 #include "ft_printf.h"
 
-int     print_o(t_modes mods, size_t arg)
-{
-   // printf("arg in10 - |%d|\n", arg);
 
+int     print_u(t_modes mods, size_t arg)
+{
     char *prefix;
     char *padding;
     char *value;
@@ -15,12 +11,10 @@ int     print_o(t_modes mods, size_t arg)
     char *res;
     int  len;
 
-    arg = caster_o(mods, arg);
-    prefix = make_prefix_o(mods, arg);
-    value = make_value_o(mods, arg);
+    arg = caster_u(mods, arg);
+    prefix = ft_strdup("");// change
+    value = make_value_u(mods, arg);// change
     padding = make_padding(mods,  prefix, value);
-    if (mods.precision != -1 && ft_strchr(mods.flags, '0') != NULL)
-        *ft_strchr(mods.flags, '0') = '_';
     if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
     {
         buff = ft_strjoin(prefix, padding);
@@ -51,16 +45,14 @@ int     print_o(t_modes mods, size_t arg)
     return (len);
 }
 
-size_t  caster_o(t_modes mods, size_t arg)
+size_t  caster_u(t_modes mods, size_t arg)
 {
-    if (ft_strncmp(mods.mod, "hh", 2) == 0 && mods.id == 'O')
-        return ((unsigned short)arg);
+    if (ft_strncmp(mods.mod, "l_", 2) == 0 || mods.id == 'U')
+        return ((unsigned long)arg);
     if (ft_strncmp(mods.mod, "h_", 2) == 0)
         return ((unsigned short)arg);
     if (ft_strncmp(mods.mod, "hh", 2) == 0)
         return ((unsigned char)arg);
-    if (ft_strncmp(mods.mod, "l_", 2) == 0 || mods.id == 'O')
-        return ((unsigned long)arg);
     if (ft_strncmp(mods.mod, "ll", 2) == 0)
         return ((unsigned long long) arg);
     if (ft_strncmp(mods.mod, "j_", 2) == 0)
@@ -70,16 +62,7 @@ size_t  caster_o(t_modes mods, size_t arg)
     return ((unsigned int)arg);
 }
 
-char *make_prefix_o(t_modes mods, size_t arg)
-{
-    if (mods.precision == -1 && arg == 0)
-        return (ft_strdup(""));
-    if (ft_strchr(mods.flags, '#') != NULL)
-        return (ft_strdup("0"));
-    return (ft_strdup(""));
-}
-
-char *make_value_o(t_modes mods, size_t arg)
+char    *make_value_u(t_modes mods, size_t arg)
 {
     char *value;
     char *p;
@@ -87,12 +70,12 @@ char *make_value_o(t_modes mods, size_t arg)
 
     if (arg == 0 && mods.precision == 0)
         return (ft_strdup(""));
-    num = ft_itoabase(arg, 8);
+    num = ft_itoabase(arg, 10);
     if (mods.precision != -1)
     {
         if (mods.precision >= (int)ft_strlen(num))
         {
-            p = create_and_fill(mods.precision - ft_strlen(num), '0');
+            p = create_and_fill(mods.precision - (int)ft_strlen(num), '0');
             value = ft_strjoin(p, num);
             free(p);
         }
@@ -102,10 +85,3 @@ char *make_value_o(t_modes mods, size_t arg)
     }
     return (num);
 }
-
-
-
-
-
-
-
