@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "libft/libft.h"
 #include <string.h>
 
 
@@ -44,6 +43,8 @@ size_t	ft_strlen(const char *s);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_atoi_base(const char *str, int str_base);
 void	ft_putchar(char c);
+char	*ft_itoabase(size_t n, int base);
+char	**ft_strsplit(char const *s, char c);
 
 int     print_o(t_modes mods, size_t arg);
 size_t  caster_o(t_modes mods, size_t arg);

@@ -44,18 +44,22 @@ NAME = libftprintf.a
 
 all: $(NAME)
 
+
 $(NAME): $(OBJECTS)
 	
-	ar rc $(NAME) $(OBJECTS) 
+	@ar rc $(NAME) $(OBJECTS) 
+	@echo "///linking of *.o files done|||"
 
 %.o: %.c
-	gcc $(FLAGS) -c $<
+	@gcc $(FLAGS) -c $<
+	@echo "///*.o files done|||"
 
 clean:
-	rm -f $(OBJECTS)
+	@rm -f $(OBJECTS)
+	@echo "///*.o files deleted|||"
 
 fclean: clean
-	rm  -f $(NAME)
-	
+	@rm  -f $(NAME)
+	@echo "///libftprintf.a deleted"
 
 re: fclean all
