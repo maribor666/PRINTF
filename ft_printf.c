@@ -2,8 +2,8 @@
 
 t_modes write_mods(const char *s, t_modes mods)
 {
-    char *id_s;
-    char *res;
+    //char *id_s;
+    //char *res;
 
 
     if (*s == '-' || *s == '+' || *s == ' ' || *s == '#' || *s == '0')
@@ -48,13 +48,13 @@ t_modes write_mods(const char *s, t_modes mods)
         mods.mod[1] = 'l';
         s++;
     }
-    id_s = "sSpdDioOuUxXcC";
-    res = ft_strchr(id_s, *s);
-    if (res != NULL)
-    {
-        mods.id = *res;
-        s++;
-    }
+//    id_s = "sSpdDioOuUxXcC%";
+//    res = ft_strchr(id_s, *s);
+//    if (res != NULL)
+//    {
+    mods.id = *s;
+    s++;
+//    }
     mods.s = (char*)s;
     return (mods);
 }
@@ -69,12 +69,16 @@ int    print_mod(t_modes mods, va_list ap)
         return (print_x(mods, va_arg(ap, size_t)));
     if (mods.id == 'u' || mods.id == 'U')
         return (print_u(mods, va_arg(ap, size_t)));
-//    if (mods.id == 'с')
-//        print_с(mods, va_arg(ap, char));
-//    if (mods.id == 's')
-//        print_s(mods, va_arg(ap, char*));
+    if (mods.id == 'c' || mods.id == 'C')
+        return (print_c(mods, va_arg(ap, int)));
+    if (mods.id == 's' || mods.id == 'S')
+        return (print_s(mods, va_arg(ap, wchar_t*)));
     if (mods.id == 'p')
         return(print_p(mods, va_arg(ap, size_t)));
+    if (mods.id == '%')
+        return (print_percent(mods));
+    if (ft_strchr("sSpdDioOuUxXcC%", mods.id) == NULL)
+        return (print_c(mods, mods.id));
     return (0);
 }
 
@@ -106,7 +110,7 @@ int     ft_printf(const char *str, ...)
     mods = set_modes();
     while (*str != '\0')
     {
-        if (str[i] == '%')
+        if (str[i] == '%' && str[i + 1] != '\0')
         {
             mods = write_mods((&str[i] + 1), mods);
             res += print_mod(mods, ap);
@@ -114,45 +118,39 @@ int     ft_printf(const char *str, ...)
             mods = set_modes();
             continue ;
         }
-        write(1, &(*str), 1);
+        if (*str != '%')
+            write(1, &(*str), 1);
+        *str != '%' ? res++ : res;
         str++;
-        res++;
     }
     va_end(ap);
     return (res);
 }
 
-#include <limits.h>
+//#include <limits.h>
+//#include <locale.h>
 //
 //int main(void)
 //{
 //    int r1;
 //    int r2;
-//    //size_t n;
-//    int *a;
-//    int value = 1;
-//    a = &value;
-//    r1 = ft_printf("|%.p|\n", 0);
-//       r2 = printf("|%.p|\n", 0);
-//    printf("r1 = %d; r2 = %d\n", r1, r2);
+//    char* l = setlocale(LC_ALL, "");
+//    char c;
 //
+//    r1 = ft_printf("{%}\n", L"42 c est cool");
+//       r2 = printf("{%}\n", L"42 c est cool");
+//    printf("r1 = %d; r2 = %d\n", r1, r2);
+//    //system("leaks PRINTF");
 //    system("leaks PRINTF | grep Process | tail -n 1");
 ////    printf("|%010+hhllh.42l0d|rest\n", 42);
-////     printf("'%25hhhllljzi' '%-i'\n", -9223372036854775808, -42);
+////     printf("'%25hhhllljzi' '%-i'\n", -9223372036854775808, -42);δ
 //
 //    return 0;
 //}
 //
-
-
-
-
-
-
-
-
-
-
+////>>>> 79_precision_mixed_with_flags [FAIL] ........FF [FAIL] octal_precision_and_flagSharp -> printf("%#.3o", 1)
+//
+//
 
 
 

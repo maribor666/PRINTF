@@ -1,5 +1,9 @@
 
 
->>>> 92_incomptbl_values_oOxX.spec [FAIL] ..F..FF [FAIL] test_octal_up_long_min -> printf("%O", LONG_MIN)
+>>>> 05_percent_escape.spec.c ---- [FAIL] ....F... [FAIL] test_modulo_without_valid_specifier -> printf("%")
 
-  95. FAIL ft_printf("@moulitest: %#.o %#.0o", 0, 0);    -> "@moulitest: 0 0"
+>>>> 50_min_width.spec.c --------- [FAIL] .........F.. [FAIL] invalidConvSpec_withMinWith -> printf("{%10R}")
+
+>>>> 53_min_width_non_valid_conv.s [FAIL] F [FAIL] nonValidConv_negativeMinWidth -> printf("{%-15Z}", 123)
+
+>>>> 79_precision_mixed_with_flags [FAIL] ......F.FF [FAIL] nonValidConvSpec_precision_minwdith_and_flagZero -> printf("{%05.Z}", 0)

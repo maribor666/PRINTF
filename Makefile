@@ -20,12 +20,18 @@ SRCS =	ft_atoi.c \
 		ft_strlen.c \
 		ft_strncmp.c \
 		ft_itoabase.c \
-		main.c \
+		ft_atoi_base.c \
+		ft_strsplit.c \
+		ft_putchar.c \
+		ft_printf.c \
 		print_d.c \
 		print_o.c \
 		print_x.c \
 		print_u.c \
-		print_p.c
+		print_p.c \
+		print_c.c \
+		print_s.c \
+		print_percent.c \
 
 
 
