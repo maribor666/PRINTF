@@ -58,7 +58,7 @@ clean:
 	@rm -f $(OBJECTS)
 	@echo "///*.o files deleted|||"
 
-fclean: clean
+fclean: clean $(NAME)
 	@rm  -f $(NAME)
 	@echo "///libftprintf.a deleted"
 
