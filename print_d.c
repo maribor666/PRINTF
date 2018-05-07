@@ -34,10 +34,11 @@ int    print_d(t_modes mods, ssize_t arg)
     padding = make_padding(mods, prefix, value);
     if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
     {
+        dprintf(2,"123");
         buff = ft_strjoin(prefix, padding);
         res = ft_strjoin(buff, value);
         free(buff);
-        dprintf(2,"123");
+
     }
     else {
         if (ft_strchr(mods.flags, '-') != NULL)
