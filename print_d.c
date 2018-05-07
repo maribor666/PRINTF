@@ -2,25 +2,6 @@
 
 int    print_d(t_modes mods, ssize_t arg)
 {
-//    int i;
-//    int j;
-//    i = 0;
-//    j = 0;
-//    if (ft_strchr(mods.flags, '+') != NULL && ft_strchr(mods.flags, ' ') != NULL)
-//    {
-//        while (i < 3)
-//        {
-//            if (mods.flags[i] != ' ')
-//            {
-//                mods.flags[j] = mods.flags[i];
-//                j++;
-//            }
-//            i++;
-//        }
-//    }
-//    mods.flags[2] = '\0';
-//    if (ft_strchr(mods.flags, '#') != NULL)
-//        *ft_strchr(mods.flags, '#') = '_';// видаляє #
     char *prefix;
     char *value;
     char *padding;
@@ -33,8 +14,10 @@ int    print_d(t_modes mods, ssize_t arg)
     value = make_value(mods, arg);
     padding = make_padding(mods, prefix, value);
 
+    dprintf(2, "1");
     if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
     {
+        dprintf(2,"1");
         buff = ft_strjoin(prefix, padding);
         res = ft_strjoin(buff, value);
         free(buff);
