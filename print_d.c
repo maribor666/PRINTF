@@ -6,21 +6,21 @@ int    print_d(t_modes mods, ssize_t arg)
     int j;
     i = 0;
     j = 0;
-    if (ft_strchr(mods.flags, '+') != NULL && ft_strchr(mods.flags, ' ') != NULL)
-    {
-        while (i < 3)
-        {
-            if (mods.flags[i] != ' ')
-            {
-                mods.flags[j] = mods.flags[i];
-                j++;
-            }
-            i++;
-        }
-    }
-    mods.flags[2] = '\0';
-    if (ft_strchr(mods.flags, '#') != NULL)
-        *ft_strchr(mods.flags, '#') = '_';// видаляє #
+//    if (ft_strchr(mods.flags, '+') != NULL && ft_strchr(mods.flags, ' ') != NULL)
+//    {
+//        while (i < 3)
+//        {
+//            if (mods.flags[i] != ' ')
+//            {
+//                mods.flags[j] = mods.flags[i];
+//                j++;
+//            }
+//            i++;
+//        }
+//    }
+//    mods.flags[2] = '\0';
+//    if (ft_strchr(mods.flags, '#') != NULL)
+//        *ft_strchr(mods.flags, '#') = '_';// видаляє #
     char *prefix;
     char *value;
     char *padding;
