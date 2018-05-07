@@ -8,7 +8,7 @@ int     print_s(t_modes mods, wchar_t *arg)
     char    *res;
     int     len;
 
-    if ((ft_strncmp(mods.mod, "l_", 2) == 0 || mods.id == 'S') && arg != NULL)
+    if ((ft_strcmp(mods.mod, "l") == 0 || mods.id == 'S') && arg != NULL)
         return (format_print_us(mods, arg));
     else
     {

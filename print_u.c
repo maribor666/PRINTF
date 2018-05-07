@@ -47,17 +47,17 @@ int     print_u(t_modes mods, size_t arg)
 
 size_t  caster_u(t_modes mods, size_t arg)
 {
-    if (ft_strncmp(mods.mod, "l_", 2) == 0 || mods.id == 'U')
+    if (ft_strcmp(mods.mod, "l") == 0 || mods.id == 'U')
         return ((unsigned long)arg);
-    if (ft_strncmp(mods.mod, "h_", 2) == 0)
+    if (ft_strcmp(mods.mod, "h") == 0)
         return ((unsigned short)arg);
-    if (ft_strncmp(mods.mod, "hh", 2) == 0)
+    if (ft_strcmp(mods.mod, "hh") == 0)
         return ((unsigned char)arg);
-    if (ft_strncmp(mods.mod, "ll", 2) == 0)
+    if (ft_strcmp(mods.mod, "ll") == 0)
         return ((unsigned long long) arg);
-    if (ft_strncmp(mods.mod, "j_", 2) == 0)
+    if (ft_strcmp(mods.mod, "j") == 0)
         return ((uintmax_t)arg);
-    if (ft_strncmp(mods.mod, "z_", 2) == 0)
+    if (ft_strcmp(mods.mod, "z") == 0)
         return ((size_t)arg);
     return ((unsigned int)arg);
 }

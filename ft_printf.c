@@ -2,59 +2,116 @@
 
 t_modes write_mods(const char *s, t_modes mods)
 {
-    //char *id_s;
-    //char *res;
+    int i;
+    int j;
+    int is_dot;
 
-
-    if (*s == '-' || *s == '+' || *s == ' ' || *s == '#' || *s == '0')
+    is_dot = 0;
+    j = 0;
+    i = 0;
+    while(is_mods(s[i]) == 1 && s[i] != '\0')
+        i++;
+    if (s[i] != '\0')
+        mods.id = s[i];
+    while (j < i)
     {
-        mods.flags[0] = *s;
-        s++;
+        if (is_flag(s[j]) == 1)
+        {
+            if (s[j - 1] == '.' && s[j] == '0')
+                j++;
+            else
+            {
+                mods.flags = append_char(mods.flags, s[j]);
+                j++;
+            }
+        }
+        if (ft_isdigit(s[j]) == 1 && is_dot == 0 && s[j] != '0')
+        {
+            mods.width = ft_atoi(&(s[j]));
+            while (ft_isdigit(s[j]) == 1)
+                j++;
+        }
+        if (s[j] == '.')
+        {
+            is_dot = 1;
+            j++;
+            if (s[j] == '0' || ft_isdigit(s[j]) == 0)
+                mods.precision = 0;
+        }
+        if (ft_isdigit(s[j]) == 1 && is_dot == 1 && s[j] != '0')
+        {
+            mods.precision = ft_atoi(&(s[j]));
+            while (ft_isdigit(s[j]) == 1)
+                j++;
+        }
+        if (is_mod(s[j]) == 1)
+        {
+            mods.mod = append_char(mods.mod, s[j]);
+            j++;
+        }
     }
-    if (*s == '-' || *s == '+' || *s == ' ' || *s == '#' || *s == '0')
-    {
-        mods.flags[1] = *s;
-        s++;
-    }
-    if (*s == '-' || *s == '+' || *s == ' ' || *s == '#' || *s == '0')
-    {
-        mods.flags[2] = *s;
-        s++;
-    }
-    //made func write_flags with appending flags
-    if (*s >= '0' && *s <= '9')
-        mods.width = ft_atoi(s);
-    while (*s >= '0' && *s <= '9')
-        s++;
-    if (*s == '.')
-    {
-        s++;
-        mods.precision = ft_atoi(s);
-    }
-    while (*s >= '0' && *s <= '9')
-        s++;
-    if (*s == 'h' || *s == 'l' || *s == 'j' || *s == 'z')
-    {
-        mods.mod[0] = *s;
-        s++;
-    }
-    if (*s == 'h' && mods.mod[0] == 'h')
-    {
-        mods.mod[1] = 'h';
-        s++;
-    }
-    if (*s == 'l' && mods.mod[0] == 'l')
-    {
-        mods.mod[1] = 'l';
-        s++;
-    }
-    mods.id = *s;
-    s++;
-    mods.s = (char*)s;
+    mods.mod = rewrite_mod(mods.mod);
+    mods.s = (char*)(s + i + 1);
     return (mods);
 }
 
-int    print_mod(t_modes mods, va_list ap)
+char    *rewrite_mod(char  *mod)
+{
+    char *res;
+
+
+    if (ft_strlen(mod) <= 1)
+        return (mod);
+    res = ft_strdup("");
+    if (mod[ft_strlen(mod) - 1] == 'z' || mod[ft_strlen(mod) - 1] == 'j')
+    {
+        res = append_char(res, mod[ft_strlen(mod) - 1]);
+        free(mod);
+        return (res);
+    }
+    else
+    {
+        if (mod[ft_strlen(mod) - 1] == mod[ft_strlen(mod) - 2])
+        {
+            res = append(res, &(mod[ft_strlen(mod) - 2]));
+            free(mod);
+        }
+        else
+        {
+            res = append(res, &(mod[ft_strlen(mod) - 1]));
+            free(mod);
+        }
+        return (res);
+    }
+}
+
+int     is_mods(char c)
+{
+    if (ft_isdigit(c) == 1 || is_flag(c) == 1
+        || is_mod(c) == 1 || c == '.')
+        return (1);
+    else
+        return (0);
+}
+
+int     is_mod(char c)
+{
+    if (c == 'h' || c == 'l' || c == 'j' || c == 'z')
+        return (1);
+    else
+        return (0);
+}
+
+int     is_flag(char c)
+{
+    if (c == '+' || c == '-' || c == '0'
+        || c == '#' || c == ' ')
+        return (1);
+    else
+        return (0);
+}
+
+int     print_mod(t_modes mods, va_list ap)
 {
     if (mods.id == 'd' || mods.id == 'i' || mods.id == 'D')
         return (print_d(mods, va_arg(ap, ssize_t)));
@@ -77,21 +134,30 @@ int    print_mod(t_modes mods, va_list ap)
     return (0);
 }
 
-t_modes set_modes(void)
+t_modes free_modes(t_modes mods)
 {
-    t_modes mods;
-
-    mods.flags[0] = '_';
-    mods.flags[1] = '_';
-    mods.flags[2] = '_';
+    free(mods.flags);
     mods.width = -1;
     mods.precision = -1;
-    mods.mod[0] = '_';
-    mods.mod[1] = '_';
+    free(mods.mod);
     mods.id = '_';
     mods.s = NULL;
     return (mods);
 }
+
+t_modes set_modes(void)
+{
+    t_modes mods;
+
+    mods.flags = ft_strdup("");
+    mods.width = -1;
+    mods.precision = -1;
+    mods.mod = ft_strdup("");
+    mods.id = '_';
+    mods.s = NULL;
+    return (mods);
+}
+
 int     ft_printf(const char *str, ...)
 {
     va_list ap;
@@ -102,17 +168,19 @@ int     ft_printf(const char *str, ...)
     res = 0;
     i = 0;
     va_start(ap, str);
-    mods = set_modes();
     while (*str != '\0')
     {
+        mods = set_modes();
         if (str[i] == '%' && str[i + 1] != '\0')
         {
             mods = write_mods((&str[i] + 1), mods);
             res += print_mod(mods, ap);
             str += (mods.s - str);
-            mods = set_modes();
+            mods = free_modes(mods);
             continue ;
         }
+        else
+            free_modes(mods);
         if (*str != '%')
             write(1, &(*str), 1);
         *str != '%' ? res++ : res;
@@ -121,27 +189,25 @@ int     ft_printf(const char *str, ...)
     va_end(ap);
     return (res);
 }
-
-#include <limits.h>
-#include <locale.h>
-
+//
+//#include <limits.h>
+//#include <locale.h>
+//
 //int main(void)
 //{
 //    int r1;
 //    int r2;
 //    char* l = setlocale(LC_ALL, "");
 //
-//    int k = 0;
-//       r1 = printf("|%05.4hhd|%n\n", -25, &k);
-//    r2 = ft_printf("|%05.4hhd|%n\n", -25, &k);
 //
+//       r1 = printf("|%ls|\n", L"暖炉");
+//    r2 = ft_printf("|%ls|\n", L"暖炉");
 //    printf("r1 = %d; r2 = %d\n", r1, r2);
 //    //system("leaks PRINTF");
 //    system("leaks PRINTF | grep Process | tail -n 1");
-////    printf("|%010+hhllh.42l0d|rest\n", 42);
-////     printf("'%25hhhllljzi' '%-i'\n", -9223372036854775808, -42);δ
+////    printf("|%010+hhl12lh.4hh-84d|rest\n", 42);
+////
+////   printf("'%25zi' '%-i'\n", -9223372036854775808, -42);
 //
 //    return 0;
 //}
-
-//assert_printf("%4.15S", L"我是一只猫。");

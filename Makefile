@@ -24,6 +24,8 @@ SRCS =	ft_atoi.c \
 		ft_strsplit.c \
 		ft_putchar.c \
 		ft_printf.c \
+		ft_strcmp.c \
+		ft_isdigit.c \
 		print_d.c \
 		print_o.c \
 		print_x.c \

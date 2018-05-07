@@ -35,7 +35,6 @@ int    print_d(t_modes mods, ssize_t arg)
 
     if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
     {
-        dprintf(2,"123");
         buff = ft_strjoin(prefix, padding);
         res = ft_strjoin(buff, value);
         free(buff);
@@ -66,21 +65,21 @@ int    print_d(t_modes mods, ssize_t arg)
 
 ssize_t caster(t_modes mods, ssize_t arg)
 {
-    if (ft_strncmp(mods.mod, "h_", 2) == 0 && mods.id == 'D')
+    if (ft_strcmp(mods.mod, "h") == 0 && mods.id == 'D')
         return ((unsigned short)arg);
-    if (ft_strncmp(mods.mod, "h_", 2) == 0)
+    if (ft_strcmp(mods.mod, "h") == 0)
         return ((short)arg);
-    if (ft_strncmp(mods.mod, "hh", 2) == 0 && mods.id == 'D')
+    if (ft_strcmp(mods.mod, "hh") == 0 && mods.id == 'D')
         return ((unsigned short)arg);
-    if (ft_strncmp(mods.mod, "hh", 2) == 0)
+    if (ft_strcmp(mods.mod, "hh") == 0)
         return ((signed char)arg);
-    if (ft_strncmp(mods.mod, "l_", 2) == 0)
+    if (ft_strcmp(mods.mod, "l") == 0)
         return ((long)arg);
-    if (ft_strncmp(mods.mod, "ll", 2) == 0)
+    if (ft_strcmp(mods.mod, "ll") == 0)
         return ((long long) arg);
-    if (ft_strncmp(mods.mod, "j_", 2) == 0)
+    if (ft_strcmp(mods.mod, "j") == 0)
         return ((intmax_t)arg);
-    if (ft_strncmp(mods.mod, "z_", 2) == 0)
+    if (ft_strcmp(mods.mod, "z") == 0)
         return ((size_t)arg);
     if (mods.id == 'D')
         return ((long int)arg);

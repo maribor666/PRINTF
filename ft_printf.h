@@ -9,18 +9,25 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-
+#include "libft/libft.h"
 
 typedef struct s_mods{
-    char    flags[3];
+    char    *flags;
     int     width;
     int     precision;
-    char    mod[2];
+    char    *mod;
     char    id;
     char    *s;
 }               t_modes;
 
 int     ft_printf(const char *str, ...);
+
+int     is_mods(char c);
+int     is_flag(char c);
+int     is_mod(char c);
+t_modes free_modes(t_modes mods);
+char    *rewrite_mod(char  *mod);
+
 int     print_d(t_modes mods, ssize_t arg);
 char    *make_value(t_modes mods, ssize_t arg);
 char    *make_padding(t_modes mods, char *prefix, char *value);
@@ -45,6 +52,7 @@ int		ft_atoi_base(const char *str, int str_base);
 void	ft_putchar(char c);
 char	*ft_itoabase(size_t n, int base);
 char	**ft_strsplit(char const *s, char c);
+int	    ft_strcmp(const char *s1, const char *s2);
 
 int     print_o(t_modes mods, size_t arg);
 size_t  caster_o(t_modes mods, size_t arg);

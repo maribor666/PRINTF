@@ -53,26 +53,28 @@ int     print_o(t_modes mods, size_t arg)
 
 size_t  caster_o(t_modes mods, size_t arg)
 {
-    if (ft_strncmp(mods.mod, "hh", 2) == 0 && mods.id == 'O')
+    if (ft_strcmp(mods.mod, "hh") == 0 && mods.id == 'O')
         return ((unsigned short)arg);
-    if (ft_strncmp(mods.mod, "h_", 2) == 0)
+    if (ft_strcmp(mods.mod, "h") == 0)
         return ((unsigned short)arg);
-    if (ft_strncmp(mods.mod, "hh", 2) == 0)
+    if (ft_strcmp(mods.mod, "hh") == 0)
         return ((unsigned char)arg);
-    if (ft_strncmp(mods.mod, "l_", 2) == 0 || mods.id == 'O')
+    if (ft_strcmp(mods.mod, "l") == 0 || mods.id == 'O')
         return ((unsigned long)arg);
-    if (ft_strncmp(mods.mod, "ll", 2) == 0)
+    if (ft_strcmp(mods.mod, "ll") == 0)
         return ((unsigned long long) arg);
-    if (ft_strncmp(mods.mod, "j_", 2) == 0)
+    if (ft_strcmp(mods.mod, "j") == 0)
         return ((uintmax_t)arg);
-    if (ft_strncmp(mods.mod, "z_", 2) == 0)
+    if (ft_strcmp(mods.mod, "z") == 0)
         return ((size_t)arg);
     return ((unsigned int)arg);
 }
 
 char *make_prefix_o(t_modes mods, size_t arg)
 {
-    if (mods.precision == -1 && arg == 0)
+    if (mods.precision == 0 && arg == 0 && ft_strchr(mods.flags, '#') == NULL)
+        return (ft_strdup(""));
+    if (mods.precision == -1 && arg == 0 && ft_strchr(mods.flags, '#') != NULL)
         return (ft_strdup(""));
     if (ft_strchr(mods.flags, '#') != NULL)
         return (ft_strdup("0"));
