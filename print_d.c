@@ -32,10 +32,10 @@ int    print_d(t_modes mods, ssize_t arg)
     prefix = make_prefix(mods, arg);
     value = make_value(mods, arg);
     padding = make_padding(mods, prefix, value);
-    dprintf(2,"123");
+
     if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
     {
-
+        dprintf(2,"123");
         buff = ft_strjoin(prefix, padding);
         res = ft_strjoin(buff, value);
         free(buff);
@@ -125,7 +125,8 @@ char    *make_padding(t_modes mods, char *prefix, char *value)
 
     padding = ft_strdup("");
     filler = ' ';
-    if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL && mods.precision == -1)
+    if (ft_strchr(mods.flags, '0') != NULL &&
+            ft_strchr(mods.flags, '-') == NULL && mods.precision == -1)
         filler = '0';
     if (mods.precision == -1 && mods.width != -1)
     {
