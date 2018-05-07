@@ -48,14 +48,10 @@ t_modes write_mods(const char *s, t_modes mods)
         mods.mod[1] = 'l';
         s++;
     }
-//    id_s = "sSpdDioOuUxXcC%";
-//    res = ft_strchr(id_s, *s);
-//    if (res != NULL)
-//    {
     mods.id = *s;
     s++;
-//    }
     mods.s = (char*)s;
+    dprintf(2,"123");
     return (mods);
 }
 
@@ -127,25 +123,26 @@ int     ft_printf(const char *str, ...)
     return (res);
 }
 
-//#include <limits.h>
-//#include <locale.h>
-//
-//int main(void)
-//{
-//    int r1;
-//    int r2;
-//    char* l = setlocale(LC_ALL, "");
-//
-//       r1 = printf("|%4.15S|\n", L"我是一只猫。");
-//    r2 = ft_printf("|%4.15S|\n", L"我是一只猫。");
-//
-//    printf("r1 = %d; r2 = %d\n", r1, r2);
-//    //system("leaks PRINTF");
-//    system("leaks PRINTF | grep Process | tail -n 1");
-////    printf("|%010+hhllh.42l0d|rest\n", 42);
-////     printf("'%25hhhllljzi' '%-i'\n", -9223372036854775808, -42);δ
-//
-//    return 0;
-//}
+#include <limits.h>
+#include <locale.h>
+
+int main(void)
+{
+    int r1;
+    int r2;
+    char* l = setlocale(LC_ALL, "");
+
+    int k = 0;
+       r1 = printf("|%05.4hhd|%n\n", -25, &k);
+    r2 = ft_printf("|%05.4hhd|%n\n", -25, &k);
+
+    printf("r1 = %d; r2 = %d\n", r1, r2);
+    //system("leaks PRINTF");
+    system("leaks PRINTF | grep Process | tail -n 1");
+//    printf("|%010+hhllh.42l0d|rest\n", 42);
+//     printf("'%25hhhllljzi' '%-i'\n", -9223372036854775808, -42);δ
+
+    return 0;
+}
 
 //assert_printf("%4.15S", L"我是一只猫。");

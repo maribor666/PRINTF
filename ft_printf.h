@@ -49,7 +49,7 @@ char	**ft_strsplit(char const *s, char c);
 int     print_o(t_modes mods, size_t arg);
 size_t  caster_o(t_modes mods, size_t arg);
 char    *make_prefix_o(t_modes mods, size_t arg);
-char *make_value_o(t_modes mods, size_t arg, char *prefix);
+char    *make_value_o(t_modes mods, size_t arg, char *prefix);
 
 int     print_x(t_modes mods, size_t arg);
 char    *to_lower_str(char *value);
