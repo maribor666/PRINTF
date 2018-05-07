@@ -14,7 +14,7 @@ int    print_d(t_modes mods, ssize_t arg)
     value = make_value(mods, arg);
     padding = make_padding(mods, prefix, value);
 
-    dprintf(2, "1");
+    //dprintf(2, "1");
     if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
     {
         dprintf(2,"1");
