@@ -32,7 +32,7 @@ int    print_d(t_modes mods, ssize_t arg)
     prefix = make_prefix(mods, arg);
     value = make_value(mods, arg);
     padding = make_padding(mods, prefix, value);
-
+    dprintf(2,"123");
     if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
     {
         buff = ft_strjoin(prefix, padding);
