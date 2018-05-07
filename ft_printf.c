@@ -50,7 +50,7 @@ t_modes write_mods(const char *s, t_modes mods)
     }
     mods.id = *s;
     s++;
-    mods.s = (char*);
+    mods.s = (char*)s;
     return (mods);
 }
 
