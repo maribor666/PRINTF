@@ -67,6 +67,7 @@ char    *rewrite_mod(char  *mod)
     {
         res = append_char(res, mod[ft_strlen(mod) - 1]);
         free(mod);
+        dprintf(2,"hrw");
         return (res);
     }
     else
@@ -81,9 +82,9 @@ char    *rewrite_mod(char  *mod)
             res = append(res, &(mod[ft_strlen(mod) - 1]));
             free(mod);
         }
+        dprintf(2,"hrw");
         return (res);
     }
-    dprintf(2,"hrw");
 }
 
 int     is_mods(char c)
