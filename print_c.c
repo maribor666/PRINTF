@@ -37,6 +37,8 @@ int    print_uc(int arg, t_modes mods)
     char    **arr_of_bits;
     int     res;
 
+    if (mods.id == '_')
+        return (0);
     if (mods.id == 'c' && ft_strcmp(mods.mod, "") == 0)
     {
         ft_putchar((char)arg);

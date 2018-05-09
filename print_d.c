@@ -17,7 +17,7 @@ int    print_d(t_modes mods, ssize_t arg)
     //dprintf(2, "1");
     if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
     {
-        dprintf(2,"1");
+        //dprintf(2,"1");
         buff = ft_strjoin(prefix, padding);
         res = ft_strjoin(buff, value);
         free(buff);

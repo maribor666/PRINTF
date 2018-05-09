@@ -189,7 +189,7 @@ int     ft_printf(const char *str, ...)
     va_end(ap);
     return (res);
 }
-//
+
 //#include <limits.h>
 //#include <locale.h>
 //
@@ -200,9 +200,9 @@ int     ft_printf(const char *str, ...)
 //    char* l = setlocale(LC_ALL, "");
 //
 //
-//       r1 = printf("|%ls|\n", L"暖炉");
-//    r2 = ft_printf("|%ls|\n", L"暖炉");
-//    printf("r1 = %d; r2 = %d\n", r1, r2);
+//       r1 = printf("%zhd\n", 4294967296);
+//    r2 = ft_printf("%zhd\n", 4294967296);
+//    printf("\nr1 = %d; r2 = %d\n", r1, r2);
 //    //system("leaks PRINTF");
 //    system("leaks PRINTF | grep Process | tail -n 1");
 ////    printf("|%010+hhl12lh.4hh-84d|rest\n", 42);
