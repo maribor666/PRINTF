@@ -7,9 +7,9 @@ int     print_c(t_modes mods, int arg)
     char    *mask;
 
     res = 0;
-    dprintf(2,"hrw");
     if (ft_strchr(mods.flags, '-') != NULL)
     {
+        dprintf(2,"hrw");
         res += print_uc(arg, mods);
         padding = make_padding_c(mods, 0, res);
         ft_putstr(padding);
