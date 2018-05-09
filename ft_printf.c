@@ -52,7 +52,6 @@ t_modes write_mods(const char *s, t_modes mods)
     }
     mods.mod = rewrite_mod(mods.mod);
     mods.s = (char*)(s + i + 1);
-    dprintf(2,"hrw");
     return (mods);
 }
 
@@ -84,6 +83,7 @@ char    *rewrite_mod(char  *mod)
         }
         return (res);
     }
+    dprintf(2,"hrw");
 }
 
 int     is_mods(char c)
