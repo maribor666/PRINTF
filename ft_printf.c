@@ -50,6 +50,7 @@ t_modes write_mods(const char *s, t_modes mods)
             j++;
         }
     }
+    dprintf(2, "write\n");
     mods.mod = rewrite_mod(mods.mod);
     mods.s = (char*)(s + i + 1);
     return (mods);
@@ -189,24 +190,24 @@ int     ft_printf(const char *str, ...)
     return (res);
 }
 
-//#include <limits.h>
-//#include <locale.h>
+#include <limits.h>
+#include <locale.h>
+
+int main(void)
+{
+    int r1;
+    int r2;
+    char* l = setlocale(LC_ALL, "");
+
+
+       r1 = printf("%zhd\n", 4294967296);
+    r2 = ft_printf("%zhd\n", 4294967296);
+    printf("\nr1 = %d; r2 = %d\n", r1, r2);
+    //system("leaks PRINTF");
+    system("leaks PRINTF | grep Process | tail -n 1");
+//    printf("|%010+hhl12lh.4hh-84d|rest\n", 42);
 //
-//int main(void)
-//{
-//    int r1;
-//    int r2;
-//    char* l = setlocale(LC_ALL, "");
-//
-//
-//       r1 = printf("%zhd\n", 4294967296);
-//    r2 = ft_printf("%zhd\n", 4294967296);
-//    printf("\nr1 = %d; r2 = %d\n", r1, r2);
-//    //system("leaks PRINTF");
-//    system("leaks PRINTF | grep Process | tail -n 1");
-////    printf("|%010+hhl12lh.4hh-84d|rest\n", 42);
-////
-////   printf("'%25zi' '%-i'\n", -9223372036854775808, -42);
-//
-//    return 0;
-//}
+//   printf("'%25zi' '%-i'\n", -9223372036854775808, -42);
+
+    return 0;
+}
