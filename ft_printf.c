@@ -53,7 +53,7 @@ t_modes write_mods(const char *s, t_modes mods)
 
     mods.mod = rewrite_mod(mods.mod);
     mods.s = (char*)(s + i + 1);
-    dprintf(2, "write\n");
+//    dprintf(2, "write\n");
     return (mods);
 }
 
@@ -114,7 +114,7 @@ int     is_flag(char c)
 
 int     print_mod(t_modes mods, va_list ap)
 {
-    dprintf(2, "mods.flags |%s|\n id|%c|\nmod|%s|\nprec|%d|\nwidth|%d|\ns|%s|\n", mods.flags, mods.id, mods.mod, mods.precision, mods.width, mods.s);
+    //dprintf(2, "mods.flags |%s|\n id|%c|\nmod|%s|\nprec|%d|\nwidth|%d|\ns|%s|\n", mods.flags, mods.id, mods.mod, mods.precision, mods.width, mods.s);
     if (mods.id == 'd' || mods.id == 'i' || mods.id == 'D')
         return (print_d(mods, va_arg(ap, ssize_t)));
     if (mods.id == 'o' || mods.id == 'O')
@@ -172,8 +172,8 @@ int     ft_printf(const char *str, ...)
     va_start(ap, str);
     while (*str != '\0')
     {
-        dprintf(2,"fmt-|%s|\n", str);
-        dprintf(2, "arg|%d|", va_arg(ap, int));
+       // dprintf(2,"fmt-|%s|\n", str);
+        //dprintf(2, "arg|%d|", va_arg(ap, int));
         mods = set_modes();
         if (str[i] == '%' && str[i + 1] != '\0')
         {
@@ -194,24 +194,24 @@ int     ft_printf(const char *str, ...)
     return (res);
 }
 
-//#include <limits.h>
-//#include <locale.h>
+#include <limits.h>
+#include <locale.h>
+
+int main(void)
+{
+    int r1;
+    int r2;
+    char* l = setlocale(LC_ALL, "");
+
+
+       r1 = printf("%%d 0000042 == |%d|\n", 34);
+    r2 = ft_printf("%%d 0000042 == |%d|\n", 34);
+    printf("\nr1 = %d; r2 = %d\n", r1, r2);
+    //system("leaks PRINTF");
+    system("leaks PRINTF | grep Process | tail -n 1");
+//    printf("|%010+hhl12lh.4hh-84d|rest\n", 42);
 //
-//int main(void)
-//{
-//    int r1;
-//    int r2;
-//    char* l = setlocale(LC_ALL, "");
-//
-//
-//       r1 = printf("%%d 0000042 == |%d|", 42);
-//    r2 = ft_printf("%%d 0000042 == |%d|", 42);
-//    printf("\nr1 = %d; r2 = %d\n", r1, r2);
-//    //system("leaks PRINTF");
-//    system("leaks PRINTF | grep Process | tail -n 1");
-////    printf("|%010+hhl12lh.4hh-84d|rest\n", 42);
-////
-////   printf("'%25zi' '%-i'\n", -9223372036854775808, -42);
-//
-//    return 0;
-//}
+//   printf("'%25zi' '%-i'\n", -9223372036854775808, -42);
+
+    return 0;
+}
