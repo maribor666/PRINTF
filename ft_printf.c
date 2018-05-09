@@ -60,6 +60,7 @@ char    *rewrite_mod(char  *mod)
     char *res;
 
 
+    dprintf(2,"hrw");
     if (ft_strlen(mod) <= 1)
         return (mod);
     res = ft_strdup("");
