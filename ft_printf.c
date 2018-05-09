@@ -194,24 +194,24 @@ int     ft_printf(const char *str, ...)
     return (res);
 }
 
-#include <limits.h>
-#include <locale.h>
-
-int main(void)
-{
-    int r1;
-    int r2;
-    char* l = setlocale(LC_ALL, "");
-
-
-       r1 = printf("%%d 0000042 == |%d|\n", 34);
-    r2 = ft_printf("%%d 0000042 == |%d|\n", 34);
-    printf("\nr1 = %d; r2 = %d\n", r1, r2);
-    //system("leaks PRINTF");
-    system("leaks PRINTF | grep Process | tail -n 1");
-//    printf("|%010+hhl12lh.4hh-84d|rest\n", 42);
+//#include <limits.h>
+//#include <locale.h>
 //
-//   printf("'%25zi' '%-i'\n", -9223372036854775808, -42);
-
-    return 0;
-}
+//int main(void)
+//{
+//    int r1;
+//    int r2;
+//    char* l = setlocale(LC_ALL, "");
+//
+//
+//       r1 = printf("%%d 0000042 == |%d|\n", 34);
+//    r2 = ft_printf("%%d 0000042 == |%d|\n", 34);
+//    printf("\nr1 = %d; r2 = %d\n", r1, r2);
+//    //system("leaks PRINTF");
+//    system("leaks PRINTF | grep Process | tail -n 1");
+////    printf("|%010+hhl12lh.4hh-84d|rest\n", 42);
+////
+////   printf("'%25zi' '%-i'\n", -9223372036854775808, -42);
+//
+//    return 0;
+//}
