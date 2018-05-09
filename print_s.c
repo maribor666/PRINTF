@@ -233,6 +233,8 @@ char    *make_padding_s(t_modes mods, int value_len)
     int     count_to_fill;
 
     filler = ' ';
+    if (ft_strchr(mods.flags, '0') != NULL)
+        filler = '0';
     res = ft_strdup("");
     if (mods.precision == -1 && mods.width == -1)
         return (res);

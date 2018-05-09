@@ -218,7 +218,7 @@ int     ft_printf(const char *str, ...)
     va_end(ap);
     return (res);
 }
-//
+
 //#include <limits.h>
 //#include <locale.h>
 //
@@ -229,8 +229,8 @@ int     ft_printf(const char *str, ...)
 //    char* l = setlocale(LC_ALL, "");
 //    char *s = "ϔϔϔϔ";
 //
-//       r1 = printf("|%.4s|\n", s);
-//    r2 = ft_printf("|%.4s|\n", "ϔϔϔϔ");
+//       r1 = printf("|%05s|\n", "abc");
+//    r2 = ft_printf("|%05s|\n", "abc");
 //    printf("\nr1 = %d; r2 = %d\n", r1, r2);
 //    //system("leaks PRINTF");
 //    system("leaks PRINTF | grep Process | tail -n 1");
