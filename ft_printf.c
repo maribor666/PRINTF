@@ -50,9 +50,10 @@ t_modes write_mods(const char *s, t_modes mods)
             j++;
         }
     }
-    dprintf(2, "write\n");
+
     mods.mod = rewrite_mod(mods.mod);
     mods.s = (char*)(s + i + 1);
+    dprintf(2, "write\n");
     return (mods);
 }
 
