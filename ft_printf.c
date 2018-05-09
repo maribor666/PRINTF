@@ -113,8 +113,8 @@ int     is_flag(char c)
 
 int     print_mod(t_modes mods, va_list ap)
 {
-    if (mods.id == 'd' || mods.id == 'i' || mods.id == 'D')
-        return (print_d(mods, va_arg(ap, ssize_t)));
+//    if (mods.id == 'd' || mods.id == 'i' || mods.id == 'D')
+//        return (print_d(mods, va_arg(ap, ssize_t)));
     if (mods.id == 'o' || mods.id == 'O')
         return (print_o(mods, va_arg(ap, size_t)));
     if (mods.id == 'x' || mods.id == 'X')
