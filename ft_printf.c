@@ -170,6 +170,7 @@ int     ft_printf(const char *str, ...)
     va_start(ap, str);
     while (*str != '\0')
     {
+        dprintf(2,"adfdf");
         mods = set_modes();
         if (str[i] == '%' && str[i + 1] != '\0')
         {
