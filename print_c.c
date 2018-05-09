@@ -7,6 +7,7 @@ int     print_c(t_modes mods, int arg)
     char    *mask;
 
     res = 0;
+    dprintf(2,"hrw");
     if (ft_strchr(mods.flags, '-') != NULL)
     {
         res += print_uc(arg, mods);
