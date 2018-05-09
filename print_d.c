@@ -14,24 +14,27 @@ int    print_d(t_modes mods, ssize_t arg)
     value = make_value(mods, arg);
     padding = make_padding(mods, prefix, value);
 
-    //dprintf(2, "1");
+    dprintf(2, "1\n");
     if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
     {
-        //dprintf(2,"1");
+        dprintf(2,"2\n");
         buff = ft_strjoin(prefix, padding);
         res = ft_strjoin(buff, value);
         free(buff);
 
     }
-    else {
+    else
+    {
         if (ft_strchr(mods.flags, '-') != NULL)
         {
+            dprintf(2,"3\n");
             buff = ft_strjoin(prefix, value);
             res = ft_strjoin(buff, padding);
             free(buff);
         }
         else
         {
+            dprintf(2,"4\n");
             buff = ft_strjoin(prefix, value);
             res = ft_strjoin(padding, buff);
             free(buff);

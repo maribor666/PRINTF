@@ -66,7 +66,6 @@ char    *rewrite_mod(char  *mod)
     {
         res = append_char(res, mod[ft_strlen(mod) - 1]);
         free(mod);
-        dprintf(2,"hrw2");
         return (res);
     }
     else
@@ -81,7 +80,6 @@ char    *rewrite_mod(char  *mod)
             res = append(res, &(mod[ft_strlen(mod) - 1]));
             free(mod);
         }
-        dprintf(2,"hrw1");
         return (res);
     }
 }
@@ -191,24 +189,24 @@ int     ft_printf(const char *str, ...)
     return (res);
 }
 
-//#include <limits.h>
-//#include <locale.h>
+#include <limits.h>
+#include <locale.h>
+
+int main(void)
+{
+    int r1;
+    int r2;
+    char* l = setlocale(LC_ALL, "");
+
+
+       r1 = printf("%zhd\n", 4294967296);
+    r2 = ft_printf("%zhd\n", 4294967296);
+    printf("\nr1 = %d; r2 = %d\n", r1, r2);
+    //system("leaks PRINTF");
+    system("leaks PRINTF | grep Process | tail -n 1");
+//    printf("|%010+hhl12lh.4hh-84d|rest\n", 42);
 //
-//int main(void)
-//{
-//    int r1;
-//    int r2;
-//    char* l = setlocale(LC_ALL, "");
-//
-//
-//       r1 = printf("%zhd\n", 4294967296);
-//    r2 = ft_printf("%zhd\n", 4294967296);
-//    printf("\nr1 = %d; r2 = %d\n", r1, r2);
-//    //system("leaks PRINTF");
-//    system("leaks PRINTF | grep Process | tail -n 1");
-////    printf("|%010+hhl12lh.4hh-84d|rest\n", 42);
-////
-////   printf("'%25zi' '%-i'\n", -9223372036854775808, -42);
-//
-//    return 0;
-//}
+//   printf("'%25zi' '%-i'\n", -9223372036854775808, -42);
+
+    return 0;
+}
