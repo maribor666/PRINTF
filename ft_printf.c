@@ -52,6 +52,7 @@ t_modes write_mods(const char *s, t_modes mods)
     }
     mods.mod = rewrite_mod(mods.mod);
     mods.s = (char*)(s + i + 1);
+    dprintf(2,"hrw4");
     return (mods);
 }
 
@@ -60,7 +61,7 @@ char    *rewrite_mod(char  *mod)
     char *res;
 
 
-    dprintf(2,"hrw");
+    dprintf(2,"hrw3");
     if (ft_strlen(mod) <= 1)
         return (mod);
     res = ft_strdup("");
@@ -68,7 +69,7 @@ char    *rewrite_mod(char  *mod)
     {
         res = append_char(res, mod[ft_strlen(mod) - 1]);
         free(mod);
-        dprintf(2,"hrw");
+        dprintf(2,"hrw2");
         return (res);
     }
     else
@@ -83,7 +84,7 @@ char    *rewrite_mod(char  *mod)
             res = append(res, &(mod[ft_strlen(mod) - 1]));
             free(mod);
         }
-        dprintf(2,"hrw");
+        dprintf(2,"hrw1");
         return (res);
     }
 }
