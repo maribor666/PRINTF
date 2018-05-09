@@ -52,6 +52,7 @@ t_modes write_mods(const char *s, t_modes mods)
     }
     mods.mod = rewrite_mod(mods.mod);
     mods.s = (char*)(s + i + 1);
+    dprintf(2,"hrw");
     return (mods);
 }
 
@@ -113,24 +114,24 @@ int     is_flag(char c)
 
 int     print_mod(t_modes mods, va_list ap)
 {
-//    if (mods.id == 'd' || mods.id == 'i' || mods.id == 'D')
-//        return (print_d(mods, va_arg(ap, ssize_t)));
-//    if (mods.id == 'o' || mods.id == 'O')
-//        return (print_o(mods, va_arg(ap, size_t)));
-//    if (mods.id == 'x' || mods.id == 'X')
-//        return (print_x(mods, va_arg(ap, size_t)));
-//    if (mods.id == 'u' || mods.id == 'U')
-//        return (print_u(mods, va_arg(ap, size_t)));
+    if (mods.id == 'd' || mods.id == 'i' || mods.id == 'D')
+        return (print_d(mods, va_arg(ap, ssize_t)));
+    if (mods.id == 'o' || mods.id == 'O')
+        return (print_o(mods, va_arg(ap, size_t)));
+    if (mods.id == 'x' || mods.id == 'X')
+        return (print_x(mods, va_arg(ap, size_t)));
+    if (mods.id == 'u' || mods.id == 'U')
+        return (print_u(mods, va_arg(ap, size_t)));
     if (mods.id == 'c' || mods.id == 'C')
         return (print_c(mods, va_arg(ap, int)));
-//    if (mods.id == 's' || mods.id == 'S')
-//        return (print_s(mods, va_arg(ap, wchar_t*)));
-//    if (mods.id == 'p')
-//        return(print_p(mods, va_arg(ap, size_t)));
-//    if (mods.id == '%')
-//        return (print_percent(mods));
-//    if (ft_strchr("sSpdDioOuUxXcC%", mods.id) == NULL)
-//        return (print_c(mods, mods.id));
+    if (mods.id == 's' || mods.id == 'S')
+        return (print_s(mods, va_arg(ap, wchar_t*)));
+    if (mods.id == 'p')
+        return(print_p(mods, va_arg(ap, size_t)));
+    if (mods.id == '%')
+        return (print_percent(mods));
+    if (ft_strchr("sSpdDioOuUxXcC%", mods.id) == NULL)
+        return (print_c(mods, mods.id));
     return (0);
 }
 
