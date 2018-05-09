@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-static	ssize_t	count_size(size_t n)
+static		ssize_t	count_size(size_t n)
 {
 	ssize_t         buff;
 	ssize_t			size;

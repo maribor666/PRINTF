@@ -3,28 +3,29 @@
 t_modes write_mods(const char *s, t_modes mods)
 {
     int i;
-    int j;
     int is_dot;
 
     is_dot = 0;
-    j = 0;
     i = 0;
     while(is_mods(s[i]) == 1 && s[i] != '\0')
         i++;
     if (s[i] != '\0')
         mods.id = s[i];
+    mods = fill_mods(mods, i, (char*)s, is_dot);
+    mods.mod = rewrite_mod(mods.mod);
+    mods.s = (char*)(s + i + 1);
+    return (mods);
+}
+
+t_modes fill_mods(t_modes mods, int i, char *s, int is_dot)
+{
+    int j;
+
+    j = 0;
     while (j < i)
     {
-        if (is_flag(s[j]) == 1)
-        {
-            if (s[j - 1] == '.' && s[j] == '0')
-                j++;
-            else
-            {
-                mods.flags = append_char(mods.flags, s[j]);
-                j++;
-            }
-        }
+
+        mods = fill_flags(s, &j, mods);
         if (ft_isdigit(s[j]) == 1 && is_dot == 0 && s[j] != '0')
         {
             mods.width = ft_atoi(&(s[j]));
@@ -38,22 +39,39 @@ t_modes write_mods(const char *s, t_modes mods)
             if (s[j] == '0' || ft_isdigit(s[j]) == 0)
                 mods.precision = 0;
         }
-        if (ft_isdigit(s[j]) == 1 && is_dot == 1 && s[j] != '0')
+        mods = fill_prec_mod(s, &j, mods, is_dot);
+    }
+    return (mods);
+}
+
+t_modes     fill_prec_mod(char *s, int *j, t_modes mods, int is_dot)
+{
+    if (ft_isdigit(s[(*j)]) == 1 && is_dot == 1 && s[(*j)] != '0')
+    {
+        mods.precision = ft_atoi(&(s[(*j)]));
+        while (ft_isdigit(s[(*j)]) == 1)
+            (*j)++;
+    }
+    if (is_mod(s[(*j)]) == 1)
+    {
+        mods.mod = append_char(mods.mod, s[(*j)]);
+        (*j)++;
+    }
+    return (mods);
+}
+
+t_modes     fill_flags(char *s, int *j, t_modes mods)
+{
+    if (is_flag(s[(*j)]) == 1)
+    {
+        if (s[(*j) - 1] == '.' && s[(*j)] == '0')
+            (*j)++;
+        else
         {
-            mods.precision = ft_atoi(&(s[j]));
-            while (ft_isdigit(s[j]) == 1)
-                j++;
-        }
-        if (is_mod(s[j]) == 1)
-        {
-            mods.mod = append_char(mods.mod, s[j]);
-            j++;
+            mods.flags = append_char(mods.flags, s[(*j)]);
+            (*j)++;
         }
     }
-
-    mods.mod = rewrite_mod(mods.mod);
-    mods.s = (char*)(s + i + 1);
-//    dprintf(2, "write\n");
     return (mods);
 }
 
@@ -130,7 +148,7 @@ int     print_mod(t_modes mods, va_list ap)
     if (mods.id == 'p')
         return(print_p(mods, va_arg(ap, size_t)));
     if (mods.id == '%')
-        return (print_percent(mods));
+        return (print_c(mods, '%'));
     if (ft_strchr("sSpdDioOuUxXcC%", mods.id) == NULL)
         return (print_c(mods, mods.id));
     return (0);
@@ -160,6 +178,18 @@ t_modes set_modes(void)
     return (mods);
 }
 
+int     perfom_conv(const char **str, t_modes mods, int   *i, va_list ap)
+{
+    int res;
+
+    res = 0;
+    mods = write_mods((&(*str[(*i)]) + 1), mods);
+    res += print_mod(mods, ap);
+    (*str) += (mods.s - (*str));
+    mods = free_modes(mods);
+    return (res);
+}
+
 int     ft_printf(const char *str, ...)
 {
     va_list ap;
@@ -170,19 +200,12 @@ int     ft_printf(const char *str, ...)
     res = 0;
     i = 0;
     va_start(ap, str);
-    dprintf(2,"fmt-|%s|\n", str);
-    dprintf(2, "arg|%d|", va_arg(ap, int));
-    dprintf(2, "arg|%d|", va_arg(ap, int));
     while (*str != '\0')
     {
-
         mods = set_modes();
         if (str[i] == '%' && str[i + 1] != '\0')
         {
-            mods = write_mods((&str[i] + 1), mods);
-            res += print_mod(mods, ap);
-            str += (mods.s - str);
-            mods = free_modes(mods);
+            res += perfom_conv(&(str), mods, &i, ap);
             continue ;
         }
         else
@@ -195,7 +218,7 @@ int     ft_printf(const char *str, ...)
     va_end(ap);
     return (res);
 }
-
+//
 //#include <limits.h>
 //#include <locale.h>
 //
@@ -204,10 +227,10 @@ int     ft_printf(const char *str, ...)
 //    int r1;
 //    int r2;
 //    char* l = setlocale(LC_ALL, "");
+//    char *s = "ϔϔϔϔ";
 //
-//
-//       r1 = printf("%%d 0000042 == |%d|\n", 34);
-//    r2 = ft_printf("%%d 0000042 == |%d|\n", 34);
+//       r1 = printf("|%.4s|\n", s);
+//    r2 = ft_printf("|%.4s|\n", "ϔϔϔϔ");
 //    printf("\nr1 = %d; r2 = %d\n", r1, r2);
 //    //system("leaks PRINTF");
 //    system("leaks PRINTF | grep Process | tail -n 1");

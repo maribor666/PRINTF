@@ -6,12 +6,9 @@
 
 int     print_o(t_modes mods, size_t arg)
 {
-   // printf("arg in10 - |%d|\n", arg);
-
     char *prefix;
     char *padding;
     char *value;
-    char *buff;
     char *res;
     int  len;
 
@@ -19,29 +16,7 @@ int     print_o(t_modes mods, size_t arg)
     prefix = make_prefix_o(mods, arg);
     value = make_value_o(mods, arg, prefix);
     padding = make_padding(mods,  prefix, value);
-    if (mods.precision != -1 && ft_strchr(mods.flags, '0') != NULL)
-        *ft_strchr(mods.flags, '0') = '_';
-    if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
-    {
-        buff = ft_strjoin(prefix, padding);
-        res = ft_strjoin(buff, value);
-        free(buff);
-    }
-    else
-    {
-        if (ft_strchr(mods.flags, '-') != NULL)
-        {
-            buff = ft_strjoin(prefix, value);
-            res = ft_strjoin(buff, padding);
-            free(buff);
-        }
-        else
-        {
-            buff = ft_strjoin(prefix, value);
-            res = ft_strjoin(padding, buff);
-            free(buff);
-        }
-    }
+    res = make_res_d(mods.flags, prefix, padding, value);
     ft_putstr(res);
     free(prefix);
     free(padding);
@@ -86,7 +61,9 @@ char *make_value_o(t_modes mods, size_t arg, char *prefix)
     char *value;
     char *p;
     char *num;
+    int     pr;
 
+    pr = mods.precision;
     if (arg == 0 && mods.precision == 0)
         return (ft_strdup(""));
     num = ft_itoabase(arg, 8);
@@ -94,7 +71,7 @@ char *make_value_o(t_modes mods, size_t arg, char *prefix)
     {
         if (mods.precision >= (int)ft_strlen(num))
         {
-            p = create_and_fill(mods.precision - ft_strlen(num) - ft_strlen(prefix), '0');
+            p = create_and_fill(pr - ft_strlen(num) - ft_strlen(prefix), '0');
             value = ft_strjoin(p, num);
             free(p);
             free(num);

@@ -14,17 +14,15 @@
 
 int     ft_count_num(int num)
 {
-    int res;
+	int res;
 
-    res = 0;
-    if (num == 0)
-        return (1);
-//    if (num < 0)
-//        res++;
-    while (num != 0)
-    {
-        num = num / 10;
-        res++;
-    }
-    return (res);
+	res = 0;
+	if (num == 0)
+		return (1);
+	while (num != 0)
+	{
+		num = num / 10;
+		res++;
+	}
+	return (res);
 }

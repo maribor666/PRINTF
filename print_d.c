@@ -2,44 +2,17 @@
 
 int    print_d(t_modes mods, ssize_t arg)
 {
-    char *prefix;
-    char *value;
-    char *padding;
-    char *res;
-    char *buff;
-    int len;
+    char    *prefix;
+    char    *value;
+    char    *padding;
+    char    *res;
+    int     len;
 
     arg = caster(mods, arg);
     prefix = make_prefix(mods, arg);
     value = make_value(mods, arg);
     padding = make_padding(mods, prefix, value);
-
-//    dprintf(2, "1\n");
-    if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
-    {
-//        dprintf(2,"2\n");
-        buff = ft_strjoin(prefix, padding);
-        res = ft_strjoin(buff, value);
-        free(buff);
-
-    }
-    else
-    {
-        if (ft_strchr(mods.flags, '-') != NULL)
-        {
-            dprintf(2,"3\n");
-            buff = ft_strjoin(prefix, value);
-            res = ft_strjoin(buff, padding);
-            free(buff);
-        }
-        else
-        {
-//            dprintf(2,"4\n");
-            buff = ft_strjoin(prefix, value);
-            res = ft_strjoin(padding, buff);
-            free(buff);
-        }
-    }
+    res = make_res_d(mods.flags, prefix, padding, value);
     ft_putstr(res);
     free(prefix);
     free(padding);
@@ -47,6 +20,35 @@ int    print_d(t_modes mods, ssize_t arg)
     len = (int)ft_strlen(res);
     free(res);
     return (len);
+}
+
+char    *make_res_d(char *flags, char *prefix, char *padding, char *value)
+{
+    char    *buff;
+    char    *res;
+
+    if (ft_strchr(flags, '0') != NULL && ft_strchr(flags, '-') == NULL)
+    {
+        buff = ft_strjoin(prefix, padding);
+        res = ft_strjoin(buff, value);
+        free(buff);
+    }
+    else
+    {
+        if (ft_strchr(flags, '-') != NULL)
+        {
+            buff = ft_strjoin(prefix, value);
+            res = ft_strjoin(buff, padding);
+            free(buff);
+        }
+        else
+        {
+            buff = ft_strjoin(prefix, value);
+            res = ft_strjoin(padding, buff);
+            free(buff);
+        }
+    }
+    return (res);
 }
 
 ssize_t caster(t_modes mods, ssize_t arg)
@@ -88,9 +90,8 @@ char    *make_value(t_modes mods, ssize_t arg)
         if (mods.precision >= ft_count_num(arg))
         {
             p = create_and_fill(mods.precision - ft_count_num(arg), '0');
-            value = ft_strjoin(p, num);
+            value = append(p, num);
             free(num);
-            free(p);
         }
         else
         {
@@ -175,7 +176,7 @@ char    *create_and_fill(int count, char filler)
     return (res);
 }
 
-char    *append(char *source, char *to_append)//source allocated with malloc but to_append is stack located
+char    *append(char *source, char *to_append)
 {
     char *res;
 

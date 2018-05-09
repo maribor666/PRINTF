@@ -27,12 +27,16 @@ int     is_flag(char c);
 int     is_mod(char c);
 t_modes free_modes(t_modes mods);
 char    *rewrite_mod(char  *mod);
+t_modes fill_mods(t_modes mods, int i, char *s, int is_dot);
+t_modes fill_flags(char *s, int *j, t_modes mods);
+t_modes     fill_prec_mod(char *s, int *j, t_modes mods, int is_dot);
 
+int     perfom_conv(const char **str, t_modes mods, int   *i, va_list ap);
 int     print_d(t_modes mods, ssize_t arg);
 char    *make_value(t_modes mods, ssize_t arg);
 char    *make_padding(t_modes mods, char *prefix, char *value);
 char    *make_prefix(t_modes mods, ssize_t arg);
-
+char    *make_res_d(char *flags, char *prefix, char *padding, char *value);
 char    *create_and_fill(int count, char filler);
 char    *append(char *source, char *to_append);
 
@@ -81,21 +85,19 @@ char    *make_padding_c(t_modes mods, int pref_len, int value_len);
 
 int     print_s(t_modes mods, wchar_t *arg);
 
-int     count_len_us(wchar_t *arg, int prec);
+int     count_len_us(wchar_t *arg, int prec, int len);
 int     count_len_wo_prec(wchar_t *arg);
 
 int     print_us_prec(wchar_t *arg, int prec);
 int     print_us(wchar_t *arg);
-
+int     print_us_prec_c(wchar_t *arg, int *i, int *prec);
 int     format_print_us(t_modes mods, wchar_t *arg);
 
 char    *make_value_s(t_modes mods, char *arg);
 char    *append_char(char *source, char to_append);
 char    *make_padding_s(t_modes mods, int value_len);
-
+int     make_res_s(t_modes mods, char *value, char *padding);
+int     print_res_us(t_modes mods, wchar_t *arg);
 int     count_bytes_in_intarr(int   *arr);
 int     *make_uchar_for_s(int c);
-
-int     print_percent(t_modes mods);
-
 #endif //PRINTF_FT_PRINTF_H

@@ -5,7 +5,6 @@ int     print_s(t_modes mods, wchar_t *arg)
 {
     char    *padding;
     char    *value;
-    char    *res;
     int     len;
 
     if ((ft_strcmp(mods.mod, "l") == 0 || mods.id == 'S') && arg != NULL)
@@ -14,26 +13,35 @@ int     print_s(t_modes mods, wchar_t *arg)
     {
         value = make_value_s(mods, (char*)arg);
         padding = make_padding_s(mods, (int)ft_strlen(value));
-        if (ft_strchr(mods.flags,'-') != NULL)
-        {
-            res = ft_strjoin(value, padding);
-            len = (int)ft_strlen(res);
-            ft_putstr(res);
-            free(padding);
-            free(value);
-            free(res);
-            return (len);
-        }
-        else
-        {
-            res = ft_strjoin(padding,value);
-            len = (int)ft_strlen(res);
-            ft_putstr(res);
-            free(padding);
-            free(value);
-            free(res);
-            return (len);
-        }
+        len = make_res_s(mods, value,padding);
+        return (len);
+    }
+}
+
+int     make_res_s(t_modes mods, char *value, char *padding)
+{
+    int     len;
+    char    *res;
+
+    if (ft_strchr(mods.flags,'-') != NULL)
+    {
+        res = ft_strjoin(value, padding);
+        len = (int)ft_strlen(res);
+        ft_putstr(res);
+        free(padding);
+        free(value);
+        free(res);
+        return (len);
+    }
+    else
+    {
+        res = ft_strjoin(padding,value);
+        len = (int)ft_strlen(res);
+        ft_putstr(res);
+        free(padding);
+        free(value);
+        free(res);
+        return (len);
     }
 }
 
@@ -43,13 +51,10 @@ int     format_print_us(t_modes mods, wchar_t *arg)
     int     res;
 
     res = 0;
-    padding = make_padding_s(mods, count_len_us(arg, mods.precision));
+    padding = make_padding_s(mods, count_len_us(arg, mods.precision, 0));
     if (ft_strchr(mods.flags,'-') != NULL)
     {
-        if (mods.precision != -1)
-            res += print_us_prec(arg, mods.precision);
-        else
-            res += print_us(arg);
+        res += print_res_us(mods, arg);
         ft_putstr(padding);
         res += ft_strlen(padding);
         free(padding);
@@ -58,23 +63,30 @@ int     format_print_us(t_modes mods, wchar_t *arg)
     {
         ft_putstr(padding);
         res += ft_strlen(padding);
-        if (mods.precision != -1)
-            res += print_us_prec(arg, mods.precision);
-        else
-            res += print_us(arg);
+        res += print_res_us(mods, arg);
         free(padding);
     }
     return (res);
 }
 
-int     count_len_us(wchar_t *arg, int prec)
+int     print_res_us(t_modes mods, wchar_t *arg)
 {
     int res;
+
+    res = 0;
+    if (mods.precision != -1)
+        res += print_us_prec(arg, mods.precision);
+    else
+        res += print_us(arg);
+    return (res);
+}
+
+int     count_len_us(wchar_t *arg, int prec, int res)
+{
     int i;
     int *uchar;
 
     i = 0;
-    res = 0;
     if (prec == -1)
         return (count_len_wo_prec(arg));
     while (arg[i] != '\0' && prec > 0)
@@ -135,13 +147,9 @@ int     print_us_prec(wchar_t *arg, int prec)
     while (arg[i] != '\0' && prec > 0)
     {
         if (arg[i] <= 127)
+            res += print_us_prec_c(arg, &i, &prec);
+        else
         {
-            ft_putchar((char)arg[i]);
-            i++;
-            res++;
-            prec--;
-        }
-        else {
             uchar = make_uchar_for_s((int) (arg[i]));
             prec -= count_bytes_in_intarr(uchar);
             if (prec >= 0)
@@ -155,6 +163,14 @@ int     print_us_prec(wchar_t *arg, int prec)
         }
     }
     return (res);
+}
+
+int     print_us_prec_c(wchar_t *arg, int *i, int *prec)
+{
+    ft_putchar((char)arg[(*i)]);
+    (*i)++;
+    (*prec)--;
+    return (1);
 }
 
 int     print_us(wchar_t *arg)
@@ -217,8 +233,6 @@ char    *make_padding_s(t_modes mods, int value_len)
     int     count_to_fill;
 
     filler = ' ';
-    if (ft_strchr(mods.flags, '0') != NULL)
-        filler = '0';
     res = ft_strdup("");
     if (mods.precision == -1 && mods.width == -1)
         return (res);
@@ -237,12 +251,11 @@ char    *make_value_s(t_modes mods, char *arg)
     int     i;
 
     i = 0;
-    if (arg == NULL)
-        arg = "(null)";
+    arg = arg == NULL ? "(null)" : arg;
     res = ft_strdup("");
-    if (mods.width == -1 && mods.precision == -1 && arg != NULL)//просто s
+    if (mods.width == -1 && mods.precision == -1 && arg != NULL)
         return (append(res, arg));
-    if (mods.width != -1 && mods.precision == -1)// з шириною без точності
+    if (mods.width != -1 && mods.precision == -1)
     {
         while (arg[i] != '\0')
         {
@@ -250,7 +263,7 @@ char    *make_value_s(t_modes mods, char *arg)
             i++;
         }
     }
-    if (mods.precision != -1)// з шириною і точністю
+    if (mods.precision != -1)
     {
         while (i < mods.precision && arg[i] != '\0')
         {
@@ -261,7 +274,7 @@ char    *make_value_s(t_modes mods, char *arg)
     return(res);
 }
 
-char    *append_char(char *source, char to_append)//source allocated with malloc but to_append is stack located
+char    *append_char(char *source, char to_append)
 {
     char *res;
     char c[2];

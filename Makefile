@@ -33,7 +33,6 @@ SRCS =	ft_atoi.c \
 		print_p.c \
 		print_c.c \
 		print_s.c \
-		print_percent.c \
 
 
 

@@ -6,7 +6,6 @@ int     print_x(t_modes mods, size_t arg)
     char *prefix;
     char *padding;
     char *value;
-    char *buff;
     char *res;
     int  len;
 
@@ -18,27 +17,7 @@ int     print_x(t_modes mods, size_t arg)
         value = to_lower_str(value);
     if (mods.precision != -1 && ft_strchr(mods.flags, '0') != NULL)
         *ft_strchr(mods.flags, '0') = '_';
-    if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
-    {
-        buff = ft_strjoin(prefix, padding);
-        res = ft_strjoin(buff, value);
-        free(buff);
-    }
-    else
-    {
-        if (ft_strchr(mods.flags, '-') != NULL)
-        {
-            buff = ft_strjoin(prefix, value);
-            res = ft_strjoin(buff, padding);
-            free(buff);
-        }
-        else
-        {
-            buff = ft_strjoin(prefix, value);
-            res = ft_strjoin(padding, buff);
-            free(buff);
-        }
-    }
+    res = make_res_d(mods.flags, prefix, padding, value);
     ft_putstr(res);
     free(prefix);
     free(padding);
@@ -50,7 +29,6 @@ int     print_x(t_modes mods, size_t arg)
 
 char *make_prefix_x(t_modes mods, size_t arg)
 {
-
     if (ft_strchr(mods.flags, '#') != NULL && arg == 0)
         return (ft_strdup(""));
     if (ft_strchr(mods.flags, '#') != NULL && mods.id == 'x')

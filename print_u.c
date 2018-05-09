@@ -7,35 +7,14 @@ int     print_u(t_modes mods, size_t arg)
     char *prefix;
     char *padding;
     char *value;
-    char *buff;
     char *res;
     int  len;
 
     arg = caster_u(mods, arg);
-    prefix = ft_strdup("");// change
-    value = make_value_u(mods, arg);// change
+    prefix = ft_strdup("");
+    value = make_value_u(mods, arg);
     padding = make_padding(mods,  prefix, value);
-    if (ft_strchr(mods.flags, '0') != NULL && ft_strchr(mods.flags, '-') == NULL)
-    {
-        buff = ft_strjoin(prefix, padding);
-        res = ft_strjoin(buff, value);
-        free(buff);
-    }
-    else
-    {
-        if (ft_strchr(mods.flags, '-') != NULL)
-        {
-            buff = ft_strjoin(prefix, value);
-            res = ft_strjoin(buff, padding);
-            free(buff);
-        }
-        else
-        {
-            buff = ft_strjoin(prefix, value);
-            res = ft_strjoin(padding, buff);
-            free(buff);
-        }
-    }
+    res = make_res_d(mods.flags, prefix, padding, value);
     ft_putstr(res);
     free(prefix);
     free(padding);

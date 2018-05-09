@@ -9,7 +9,6 @@ int     print_c(t_modes mods, int arg)
     res = 0;
     if (ft_strchr(mods.flags, '-') != NULL)
     {
-        //dprintf(2,"hrw");
         res += print_uc(arg, mods);
         padding = make_padding_c(mods, 0, res);
         ft_putstr(padding);
@@ -119,30 +118,27 @@ char    *imp_mask(char *bits, char *mask)
 {
     int     i;
     int     j;
-    char    *res;
 
     i = (int)ft_strlen(mask) - 1;
     j = (int)ft_strlen(bits) - 1;
-    res = ft_strdup(mask);
-    free(mask);
     while (j != -1)
     {
-        if (res[i] == 'x')
+        if (mask[i] == 'x')
         {
-            res[i] = bits[j];
+            mask[i] = bits[j];
             j--;
         }
         i--;
     }
     i = 0;
-    while (res[i] != '\0')
+    while (mask[i] != '\0')
     {
-        if (res[i] == 'x')
-            res[i] = '0';
+        if (mask[i] == 'x')
+            mask[i] = '0';
         i++;
     }
     free(bits);
-    return (res);
+    return (mask);
 }
 
 char    *get_mask(int num_of_bits)
