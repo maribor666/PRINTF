@@ -114,6 +114,7 @@ int     is_flag(char c)
 
 int     print_mod(t_modes mods, va_list ap)
 {
+    dprintf(2, "mods.flags |%s| id|%c|mod|%s|prec|%d|width|%d|s|%s|\n", mods.flags, mods.id, mods.mod, mods.precision, mods.width, mods.s);
     if (mods.id == 'd' || mods.id == 'i' || mods.id == 'D')
         return (print_d(mods, va_arg(ap, ssize_t)));
     if (mods.id == 'o' || mods.id == 'O')
